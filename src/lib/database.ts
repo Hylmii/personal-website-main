@@ -117,7 +117,15 @@ export async function getContacts(
   page: number = 1, 
   limit: number = 10, 
   status?: string
-): Promise<{ contacts: Contact[]; total: number; totalPages: number }> {
+): Promise<{ 
+  contacts: Contact[]; 
+  pagination: {
+    currentPage: number;
+    totalPages: number;
+    totalItems: number;
+    itemsPerPage: number;
+  }
+}> {
   try {
     const connection = await pool.getConnection();
     const offset = (page - 1) * limit;
@@ -135,23 +143,46 @@ export async function getContacts(
     const [countResult] = await connection.execute(countQuery, queryParams);
     const total = (countResult as any)[0].total;
     
-    // Get contacts with pagination
-    const selectQuery = `
+        // Get contacts with pagination - use query instead of execute for MySQL 9.4 compatibility
+    let selectQuery = `
       SELECT * FROM contacts 
       ${whereClause}
       ORDER BY created_at DESC 
-      LIMIT ? OFFSET ?
+      LIMIT ${parseInt(limit.toString())} OFFSET ${parseInt(offset.toString())}
     `;
     
-    const [contacts] = await connection.execute(selectQuery, [...queryParams, limit, offset]);
-    
-    connection.release();
-    
-    return {
-      contacts: contacts as Contact[],
-      total,
-      totalPages: Math.ceil(total / limit)
-    };
+    // For status filtering, we still need to use execute with parameters
+    if (status) {
+      selectQuery = `
+        SELECT * FROM contacts 
+        WHERE status = ?
+        ORDER BY created_at DESC 
+        LIMIT ${parseInt(limit.toString())} OFFSET ${parseInt(offset.toString())}
+      `;
+      const [contacts] = await connection.execute(selectQuery, [status]);
+      connection.release();
+      return {
+        contacts: contacts as Contact[],
+        pagination: {
+          currentPage: page,
+          totalPages: Math.ceil(total / limit),
+          totalItems: total,
+          itemsPerPage: limit
+        }
+      };
+    } else {
+      const [contacts] = await connection.query(selectQuery);
+      connection.release();
+      return {
+        contacts: contacts as Contact[],
+        pagination: {
+          currentPage: page,
+          totalPages: Math.ceil(total / limit),
+          totalItems: total,
+          itemsPerPage: limit
+        }
+      };
+    }
   } catch (error) {
     console.error('❌ Failed to get contacts:', error);
     throw error;

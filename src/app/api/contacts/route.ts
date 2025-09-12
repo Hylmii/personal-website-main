@@ -63,10 +63,10 @@ export async function GET(request: NextRequest) {
       success: true,
       data: result.contacts,
       pagination: {
-        currentPage: page,
-        totalPages: result.totalPages,
-        total: result.total,
-        limit
+        currentPage: result.pagination.currentPage,
+        totalPages: result.pagination.totalPages,
+        total: result.pagination.totalItems,
+        limit: result.pagination.itemsPerPage
       },
       source: 'MySQL'
     });
