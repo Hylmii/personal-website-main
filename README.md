@@ -1,16 +1,169 @@
 # Hylmi Rafif Rabbani - Personal Portfolio Website
 
-A modern, responsive personal portfolio website showcasing my experience as a Technology & Cybersecurity Professional.
+A modern, responsive personal portfolio website showcasing my experience as a Technology & Cybersecurity Professional. Built with Next.js 15, TypeScript, and featuring a secure admin dashboard with contact management system.
 
-## � About
+## 🛡️ SECURITY NOTICE
 
-This portfolio website represents Hylmi Rafif Rabbani's professional journey in technology and cybersecurity, featuring leadership roles, entrepreneurial ventures, and technical expertise.
+**This portfolio includes protected admin areas. Default credentials MUST be changed before deployment:**
+
+- **Admin Username**: `hylmi` 
+- **Admin Password**: `admin2024`
+
+**🚨 CRITICAL**: Change these credentials in `src/app/admin/page.tsx` and `src/app/database/page.tsx` before deploying to production!
+
+## 🚀 Features
+
+### 🎨 Design & Interface
+- **Modern Design**: Clean, professional layout with gradient effects
+- **Responsive**: Fully responsive design for all devices  
+- **Interactive**: Smooth animations with Framer Motion
+- **Query Theme**: Database/coding themed decorative elements
+
+### 📧 Contact System
+- **Contact Form**: Functional contact form with validation
+- **Email Integration**: Automated email sending via Nodemailer
+- **Database Storage**: All messages saved to database (MySQL/SQLite)
+- **Status Tracking**: Message status management
+
+### 🔒 Admin Dashboard
+- **Authentication**: Username/password protected access
+- **Contact Management**: View, update, and manage all submissions
+- **Statistics**: Dashboard with contact analytics
+- **Database Viewer**: Direct database inspection tools
+- **CRUD Operations**: Full contact management capabilities
+
+### 💾 Database System
+- **Dual Database**: MySQL primary with SQLite fallback
+- **Automatic Setup**: Database tables created automatically
+- **Error Handling**: Robust error handling and recovery
+
+## 🔧 Quick Setup
+
+### 1. Installation
 
 ## 🚀 Professional Highlights
 
 - **Current Role**: Chairperson at Nextzenith Ventures MiRoom
 - **Background**: Cybersecurity, Project Management, Business Development
 - **Experience**: Google, Traveloka, PT Pertamina Gas Negara Tbk, and more
+- **Education**: BINUS University (Cybersecurity), Harvard Business School, Purwadhika
+```bash
+git clone <repository-url>
+cd personal-website-main
+npm install
+```
+
+### 2. Environment Setup
+
+Create `.env.local` file:
+```bash
+# Email Configuration
+EMAIL_USER=your-email@gmail.com
+EMAIL_PASS=your-app-password
+
+# Optional MySQL Configuration
+MYSQL_HOST=localhost
+MYSQL_USER=your-mysql-user
+MYSQL_PASSWORD=your-mysql-password
+MYSQL_DATABASE=portfolio_db
+```
+
+### 3. Security Configuration (CRITICAL)
+
+**BEFORE DEPLOYMENT**, change admin credentials in:
+
+**File: `src/app/admin/page.tsx` (lines 28-29)**
+```javascript
+const ADMIN_USERNAME = 'your-secure-username';
+const ADMIN_PASSWORD = 'your-secure-password';
+```
+
+**File: `src/app/database/page.tsx` (lines 38-39)**
+```javascript
+const ADMIN_USERNAME = 'your-secure-username';
+const ADMIN_PASSWORD = 'your-secure-password';
+```
+
+### 4. Development
+
+```bash
+npm run dev
+```
+
+Access:
+- Portfolio: http://localhost:3000
+- Admin: http://localhost:3000/admin
+- Database: http://localhost:3000/database
+
+## 🚀 Deployment to Vercel
+
+### 1. Prepare for Deployment
+```bash
+# Test build
+npm run build
+
+# Ensure no errors and all routes work
+```
+
+### 2. Deploy to Vercel
+
+**Option A: GitHub Integration (Recommended)**
+1. Push code to GitHub
+2. Connect repository at [vercel.com](https://vercel.com)
+3. Add environment variables in Vercel dashboard
+4. Deploy automatically
+
+**Option B: Vercel CLI**
+```bash
+npm i -g vercel
+vercel --prod
+```
+
+### 3. Configure Environment Variables in Vercel
+
+Add these in Vercel Dashboard → Project → Settings → Environment Variables:
+
+```
+EMAIL_USER=your-gmail@gmail.com
+EMAIL_PASS=your-gmail-app-password
+```
+
+### 4. Verify Deployment
+
+1. ✅ Portfolio loads correctly
+2. ✅ Contact form sends emails
+3. ✅ Admin login works with your new credentials
+4. ✅ Database operations function properly
+
+## 🔒 Security Features
+
+### Protected Routes
+- `/admin` - Admin dashboard (authentication required)
+- `/database` - Database viewer (authentication required)
+
+### Authentication System
+- Username/password protection
+- Session management via localStorage
+- Automatic logout functionality
+- Protection against unauthorized access
+
+### Production Security Checklist
+- [ ] Changed default admin credentials
+- [ ] Set strong password (12+ characters)
+- [ ] Configured email credentials
+- [ ] Tested authentication in production
+- [ ] Verified no sensitive data exposed
+
+## 🧑‍💼 About Hylmi Rafif Rabbani
+
+This portfolio represents my professional journey in technology and cybersecurity, featuring:
+
+### Current Role
+- **Chairperson**: Nextzenith Ventures MiRoom
+
+### Professional Background  
+- **Expertise**: Cybersecurity, Project Management, Business Development
+- **Experience**: Google, Traveloka, PT Pertamina Gas Negara Tbk
 - **Education**: BINUS University (Cybersecurity), Harvard Business School, Purwadhika
 - **Entrepreneur**: Founder of Kedai Mas Yo & Cafe & Angkringan Bawah Kabel
 
@@ -24,9 +177,9 @@ This portfolio website represents Hylmi Rafif Rabbani's professional journey in 
 - **Location**: West Jakarta, Jakarta, Indonesia
 - **Phone**: +62 857 1777 5232
 
-## 📋 Sections
+## 📋 Portfolio Sections
 
-### 🏠 Home (Hero Section)
+### 🏠 Hero Section
 - Name and job title
 - Professional photo/avatar
 - Brief introduction
