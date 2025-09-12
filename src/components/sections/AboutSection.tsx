@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { Section } from '../ui/Section';
 import { SectionTitle } from '../ui/SectionTitle';
 import { aboutMe } from '@/data/portfolio';
+import { AboutQueryElements } from '../decorations/SectionQueryElements';
 import { CheckCircleIcon, AcademicCapIcon, BriefcaseIcon, TrophyIcon } from '@heroicons/react/24/outline';
 
 export const AboutSection: React.FC = () => {
@@ -26,7 +27,10 @@ export const AboutSection: React.FC = () => {
   ];
 
   return (
-    <Section id="about" className="py-20 bg-gray-50">
+    <Section id="about" className="py-20 bg-gray-50 relative">
+      {/* Query Theme Decorations */}
+      <AboutQueryElements />
+      
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

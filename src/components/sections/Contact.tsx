@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { Section } from '../ui/Section';
 import { Button } from '../ui/Button';
 import { personalInfo } from '@/data/portfolio';
+import { ContactQueryElements } from '../decorations/SectionQueryElements';
 import { 
   EnvelopeIcon, 
   PhoneIcon, 
@@ -176,7 +177,10 @@ export const ContactSection: React.FC = () => {
   }
 
   return (
-    <Section id="contact" className="py-20 bg-gray-50">
+    <Section id="contact" className="py-20 bg-gray-50 relative">
+      {/* Query Theme Decorations */}
+      <ContactQueryElements />
+      
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

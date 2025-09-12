@@ -3,11 +3,15 @@
 import { motion } from 'framer-motion';
 import { Section } from '../ui/Section';
 import { experiences } from '@/data/portfolio';
+import { ExperienceQueryElements } from '../decorations/SectionQueryElements';
 import { CalendarIcon, BuildingOfficeIcon, CheckCircleIcon } from '@heroicons/react/24/outline';
 
 export const ExperienceSection: React.FC = () => {
   return (
-    <Section id="experience" className="py-20 bg-gray-50">
+    <Section id="experience" className="py-20 bg-gray-50 relative">
+      {/* Query Theme Decorations */}
+      <ExperienceQueryElements />
+      
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

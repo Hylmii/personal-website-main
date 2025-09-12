@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { Section } from '../ui/Section';
 import { projects } from '@/data/portfolio';
+import { PortfolioQueryElements } from '../decorations/SectionQueryElements';
 import { 
   CodeBracketIcon,
   ChartBarIcon,
@@ -165,7 +166,10 @@ export const PortfolioSection: React.FC = () => {
     : featuredProjects.filter(p => p.category === projectCategories.find(c => c.id === selectedCategory)?.title);
 
   return (
-    <Section id="portfolio" className="py-20 bg-white">
+    <Section id="portfolio" className="py-20 bg-white relative">
+      {/* Query Theme Decorations */}
+      <PortfolioQueryElements />
+      
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         {/* Header */}
         <motion.div

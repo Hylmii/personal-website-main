@@ -6,6 +6,7 @@ import { useState, useEffect } from 'react';
 import { Button } from '../ui/Button';
 import { Section } from '../ui/Section';
 import { personalInfo } from '@/data/portfolio';
+import { HeroQueryElements } from '../decorations/SectionQueryElements';
 
 export const HeroSection: React.FC = () => {
   const [mounted, setMounted] = useState(false);
@@ -33,6 +34,9 @@ export const HeroSection: React.FC = () => {
       id="home" 
       className="min-h-screen flex items-center justify-center relative overflow-hidden bg-white"
     >
+      {/* Query Theme Decorations */}
+      <HeroQueryElements />
+      
       {/* Professional Clean Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-gray-50 via-white to-gray-100">
         {/* Subtle geometric pattern */}

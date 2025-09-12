@@ -14,3 +14,6 @@ export { SkillsSection } from './sections/SkillsSection';
 export { PortfolioSection } from './sections/PortfolioSection';
 export { ExperienceSection } from './sections/ExperienceSection';
 export { ContactSection as Contact } from './sections/Contact';
+
+// Decorative Components
+export * from './decorations';

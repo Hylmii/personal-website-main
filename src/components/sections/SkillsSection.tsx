@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
 import { Section } from '../ui/Section';
 import { skills } from '@/data/portfolio';
+import { SkillsQueryElements } from '../decorations/SectionQueryElements';
 import { 
   CloudIcon, 
   ShieldCheckIcon, 
@@ -332,7 +333,10 @@ export const SkillsSection: React.FC = () => {
   };
 
   return (
-    <Section id="skills" className="py-20 bg-gradient-to-br from-gray-50 via-white to-blue-50">
+    <Section id="skills" className="py-20 bg-gradient-to-br from-gray-50 via-white to-blue-50 relative">
+      {/* Query Theme Decorations */}
+      <SkillsQueryElements />
+      
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
