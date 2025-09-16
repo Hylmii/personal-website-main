@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import pool, { testConnection, initializeDatabase } from '@/lib/database';
 import { getSQLiteContactStats, initSQLiteDatabase } from '@/lib/sqlite';
 
+// Force dynamic rendering for this API route
+export const dynamic = 'force-dynamic';
+
 // GET /api/contacts/stats - Get contact statistics
 export async function GET(request: NextRequest) {
   try {

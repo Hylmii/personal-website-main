@@ -3,6 +3,9 @@ import nodemailer from 'nodemailer';
 import { insertContact, initializeDatabase, testConnection } from '@/lib/database';
 import { insertSQLiteContact, initSQLiteDatabase, testSQLiteConnection } from '@/lib/sqlite';
 
+// Force dynamic rendering for this API route
+export const dynamic = 'force-dynamic';
+
 export async function POST(request: NextRequest) {
   try {
     const { from_name, from_email, company, subject, message } = await request.json();

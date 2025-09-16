@@ -3,6 +3,9 @@ import { testConnection, initializeDatabase } from '@/lib/database';
 import { initSQLiteDatabase, getSQLiteContacts, insertSQLiteContact, testSQLiteConnection } from '@/lib/sqlite';
 import pool from '@/lib/database';
 
+// Force dynamic rendering for this API route
+export const dynamic = 'force-dynamic';
+
 // GET /api/database/test - Test database connection and show basic info
 export async function GET(request: NextRequest) {
   try {

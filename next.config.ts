@@ -5,7 +5,8 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: __dirname,
   },
-  output: 'export',
+  // Remove output: 'export' to allow API routes to work
+  // output: 'export',
   trailingSlash: true,
   images: {
     unoptimized: true

@@ -15,6 +15,9 @@ import {
   initSQLiteDatabase 
 } from '@/lib/sqlite';
 
+// Force dynamic rendering for this API route
+export const dynamic = 'force-dynamic';
+
 // GET /api/contacts - Get all contacts with pagination
 export async function GET(request: NextRequest) {
   try {

@@ -2,6 +2,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getContactById, updateContactStatus, deleteContact, testConnection } from '@/lib/database';
 import { getSQLiteContactById, updateSQLiteContactStatus, deleteSQLiteContact, initSQLiteDatabase } from '@/lib/sqlite';
 
+// Force dynamic rendering for this API route
+export const dynamic = 'force-dynamic';
+
 // GET /api/contacts/[id] - Get specific contact
 export async function GET(
   request: NextRequest,
