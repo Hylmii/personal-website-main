@@ -53,6 +53,8 @@ export const ContactSection: React.FC = () => {
         body: JSON.stringify(emailData),
       });
 
+      const result = await response.json();
+      
       if (response.ok) {
         setIsSubmitting(false);
         setIsSubmitted(true);
@@ -63,13 +65,18 @@ export const ContactSection: React.FC = () => {
           subject: '',
           message: ''
         });
+        console.log('✅ Email sent successfully:', result);
       } else {
-        throw new Error('Failed to send email');
+        console.error('❌ API Error:', result);
+        throw new Error(result.message || 'Failed to send email');
       }
     } catch (error) {
-      console.error('Error sending email:', error);
+      console.error('❌ Error sending email:', error);
       setIsSubmitting(false);
-      alert('Failed to send email. Please try again.');
+      
+      // Show more specific error message
+      const errorMessage = error instanceof Error ? error.message : 'Failed to send email. Please try again.';
+      alert(errorMessage);
     }
   };
 

@@ -7,11 +7,17 @@ import { insertSQLiteContact, initSQLiteDatabase, testSQLiteConnection } from '@
 export const dynamic = 'force-dynamic';
 
 export async function POST(request: NextRequest) {
+  console.log('🔧 API /send-email called');
+  
   try {
-    const { from_name, from_email, company, subject, message } = await request.json();
+    const body = await request.json();
+    console.log('📥 Request body received:', Object.keys(body));
+    
+    const { from_name, from_email, company, subject, message } = body;
 
     // Validate required fields
     if (!from_name || !from_email || !subject || !message) {
+      console.log('❌ Validation failed - missing fields');
       return NextResponse.json({ 
         message: 'Missing required fields: name, email, subject, and message are required' 
       }, { status: 400 });
@@ -20,12 +26,18 @@ export async function POST(request: NextRequest) {
     // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(from_email)) {
+      console.log('❌ Validation failed - invalid email format');
       return NextResponse.json({ 
         message: 'Invalid email format' 
       }, { status: 400 });
     }
 
     // Check if email credentials are available
+    console.log('🔑 Checking environment variables:', {
+      EMAIL_USER: process.env.EMAIL_USER ? 'SET' : 'MISSING',
+      EMAIL_PASS: process.env.EMAIL_PASS ? 'SET' : 'MISSING'
+    });
+    
     if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
       console.error('❌ Email credentials missing');
       return NextResponse.json({ 
