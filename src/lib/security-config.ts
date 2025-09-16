@@ -2,7 +2,7 @@
 export const SECURITY_CONFIG = {
   // Rate limiting
   RATE_LIMIT: {
-    maxRequests: 10, // Increased from 5 to 10 for normal users
+    maxRequests: 5, // Reduced back to 5 for stricter control
     windowMs: 15 * 60 * 1000, // 15 minutes
   },
   
@@ -40,6 +40,42 @@ export const SECURITY_CONFIG = {
     'java',
     'okhttp',
     'apache-httpclient',
+    'newman',  // Postman CLI
+    'postmanruntime',
+    'thunderclient',
+    'restclient',
+    'httpclient',
+    'node.js',
+    'node/',
+    'python/',
+    'php/',
+    'go/',
+    'rust/',
+    'dart/',
+    'swift/',
+    'kotlin/',
+    'c#',
+    'c++',
+    'powershell',
+    'batch',
+    'shell',
+    'bash',
+    'zsh',
+    'fish',
+    'restsharp',
+    'unirest',
+    'request',
+    'http',
+    'https',
+    'fetch',
+    'api',
+    'client',
+    'tool',
+    'test',
+    'bot',
+    'crawler',
+    'spider',
+    'scraper',
   ],
   
   // Browser indicators - requests should have at least one

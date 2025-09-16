@@ -18,17 +18,26 @@ export function middleware(request: NextRequest) {
     if (!securityCheck.valid) {
       logSecurityEvent(request, 'MIDDLEWARE_BLOCKED', {
         reason: securityCheck.reason,
-        endpoint: request.nextUrl.pathname
+        endpoint: request.nextUrl.pathname,
+        userAgent: request.headers.get('user-agent'),
+        ip: request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown'
       });
       
-      return NextResponse.json({ 
-        message: 'Access denied',
-        error: 'Request blocked by security policy'
-      }, { 
+      // Return a minimal error response (not HTML)
+      return new Response(JSON.stringify({ 
+        error: 'Access Denied',
+        message: 'This request has been blocked by our security system',
+        code: 'SECURITY_BLOCK',
+        timestamp: new Date().toISOString()
+      }), { 
         status: 403,
         headers: {
+          'Content-Type': 'application/json',
           'X-RateLimit-Remaining': securityCheck.rateLimitInfo?.remaining.toString() || '0',
-          'X-Security-Policy': 'strict'
+          'X-Security-Policy': 'strict',
+          'X-Content-Type-Options': 'nosniff',
+          'X-Frame-Options': 'DENY',
+          'X-XSS-Protection': '1; mode=block',
         }
       });
     }
