@@ -1,0 +1,17 @@
+{
+  "name": "Hylmi Rafif Rabbani - Technology & Cybersecurity Professional",
+  "short_name": "Hylmi Rafif",
+  "description": "Technology and cybersecurity professional portfolio",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff",
+  "icons": [
+    {
+      "src": "/avatarhylmi.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ]
+}
