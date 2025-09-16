@@ -10,6 +10,29 @@ export async function POST(request: NextRequest) {
   try {
     const { from_name, from_email, company, subject, message } = await request.json();
 
+    // Validate required fields
+    if (!from_name || !from_email || !subject || !message) {
+      return NextResponse.json({ 
+        message: 'Missing required fields: name, email, subject, and message are required' 
+      }, { status: 400 });
+    }
+
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(from_email)) {
+      return NextResponse.json({ 
+        message: 'Invalid email format' 
+      }, { status: 400 });
+    }
+
+    // Check if email credentials are available
+    if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+      console.error('❌ Email credentials missing');
+      return NextResponse.json({ 
+        message: 'Email service temporarily unavailable. Please try again later.' 
+      }, { status: 503 });
+    }
+
     // Get client IP and User Agent for logging
     const clientIP = request.headers.get('x-forwarded-for') || 
                     request.headers.get('x-real-ip') || 
@@ -113,6 +136,17 @@ export async function POST(request: NextRequest) {
     
     const transporter = nodemailer.createTransport(transportConfig);
 
+    // Test the connection first
+    try {
+      await transporter.verify();
+      console.log('✅ SMTP connection verified');
+    } catch (smtpError) {
+      console.error('❌ SMTP connection failed:', smtpError);
+      return NextResponse.json({ 
+        message: 'Email service connection failed. Please try again later.' 
+      }, { status: 503 });
+    }
+
     // Email content
     const emailContent = `
       <h2>New Contact Form Submission</h2>
@@ -134,29 +168,51 @@ export async function POST(request: NextRequest) {
     `;
 
     // Send email
-    const result = await transporter.sendMail({
-      from: process.env.EMAIL_USER,
-      to: 'hylmir25@gmail.com', // Sementara kirim ke Gmail karena iCloud penuh
-      subject: `Portfolio Contact: ${subject}`,
-      html: emailContent,
-      replyTo: from_email,
-    });
+    try {
+      const result = await transporter.sendMail({
+        from: process.env.EMAIL_USER,
+        to: 'hylmir25@gmail.com', // Sementara kirim ke Gmail karena iCloud penuh
+        subject: `Portfolio Contact: ${subject}`,
+        html: emailContent,
+        replyTo: from_email,
+      });
 
-    console.log('✅ Email sent successfully:', {
-      messageId: result.messageId,
-      accepted: result.accepted,
-      rejected: result.rejected,
-      to: 'hylmir25@gmail.com',
-      databaseId: contactId
-    });
-    return NextResponse.json({ 
-      message: 'Email sent successfully and saved to database',
-      messageId: result.messageId,
-      databaseId: contactId,
-      databaseType: databaseType
-    }, { status: 200 });
+      console.log('✅ Email sent successfully:', {
+        messageId: result.messageId,
+        accepted: result.accepted,
+        rejected: result.rejected,
+        to: 'hylmir25@gmail.com',
+        databaseId: contactId
+      });
+
+      return NextResponse.json({ 
+        message: 'Email sent successfully and saved to database',
+        messageId: result.messageId,
+        databaseId: contactId,
+        databaseType: databaseType
+      }, { status: 200 });
+
+    } catch (emailError) {
+      console.error('❌ Email sending failed:', emailError);
+      
+      // Still return success if database save worked
+      if (contactId) {
+        return NextResponse.json({ 
+          message: 'Message saved but email delivery failed. We will contact you soon!',
+          databaseId: contactId,
+          databaseType: databaseType
+        }, { status: 202 }); // 202 Accepted
+      }
+      
+      return NextResponse.json({ 
+        message: 'Failed to send email. Please try again or contact directly via email.' 
+      }, { status: 500 });
+    }
+
   } catch (error) {
-    console.error('Error sending email:', error);
-    return NextResponse.json({ message: 'Failed to send email' }, { status: 500 });
+    console.error('❌ General error:', error);
+    return NextResponse.json({ 
+      message: 'An unexpected error occurred. Please try again later.' 
+    }, { status: 500 });
   }
 }
