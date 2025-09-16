@@ -4,46 +4,47 @@ import { validateRequest, logSecurityEvent, passesAdvancedAPIToolDetection, getC
 
 // Middleware function
 export function middleware(request: NextRequest) {
-  // BLOCK POSTMAN AND API TOOLS FROM ALL ROUTES (including HTML pages)
-  if (!passesAdvancedAPIToolDetection(request)) {
-    logSecurityEvent(request, 'MIDDLEWARE_BLOCKED', {
-      reason: 'API testing tool detected - blocked from accessing any content',
-      endpoint: request.nextUrl.pathname,
-      userAgent: request.headers.get('user-agent'),
-      ip: getClientIP(request),
-      method: request.method
-    });
-    
-    // Return JSON error for ALL blocked requests (no HTML access)
-    return new Response(JSON.stringify({ 
-      error: 'Access Denied',
-      message: 'Automated tools are not permitted to access this website',
-      code: 'API_TOOL_BLOCKED',
-      timestamp: new Date().toISOString(),
-      blocked_reason: 'API testing tool detection'
-    }), { 
-      status: 403,
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Security-Policy': 'strict-no-tools',
-        'X-Content-Type-Options': 'nosniff',
-        'X-Frame-Options': 'DENY',
-        'X-XSS-Protection': '1; mode=block',
-        'Cache-Control': 'no-store, no-cache, must-revalidate',
-        'Pragma': 'no-cache'
-      }
-    });
-  }
-
-  // Apply additional security to API routes
-  if (request.nextUrl.pathname.startsWith('/api/')) {
-    
+  const isApiRoute = request.nextUrl.pathname.startsWith('/api/');
+  
+  // For API routes, apply strict security
+  if (isApiRoute) {
     // Skip security for database test endpoint (for admin use)
     if (request.nextUrl.pathname === '/api/database/test') {
       return NextResponse.next();
     }
     
-    // Perform security validation
+    // STRICT BLOCKING for API routes - block all API tools
+    if (!passesAdvancedAPIToolDetection(request)) {
+      logSecurityEvent(request, 'MIDDLEWARE_BLOCKED', {
+        reason: 'API testing tool detected - blocked from API access',
+        endpoint: request.nextUrl.pathname,
+        userAgent: request.headers.get('user-agent'),
+        ip: getClientIP(request),
+        method: request.method
+      });
+      
+      // Return JSON error for blocked API requests
+      return new Response(JSON.stringify({ 
+        error: 'Access Denied',
+        message: 'Automated tools are not permitted to access this API',
+        code: 'API_TOOL_BLOCKED',
+        timestamp: new Date().toISOString(),
+        blocked_reason: 'API testing tool detection'
+      }), { 
+        status: 403,
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Security-Policy': 'strict-no-tools',
+          'X-Content-Type-Options': 'nosniff',
+          'X-Frame-Options': 'DENY',
+          'X-XSS-Protection': '1; mode=block',
+          'Cache-Control': 'no-store, no-cache, must-revalidate',
+          'Pragma': 'no-cache'
+        }
+      });
+    }
+
+    // Apply full security validation for API routes
     const securityCheck = validateRequest(request);
     
     if (!securityCheck.valid) {
@@ -51,7 +52,7 @@ export function middleware(request: NextRequest) {
         reason: securityCheck.reason,
         endpoint: request.nextUrl.pathname,
         userAgent: request.headers.get('user-agent'),
-        ip: request.headers.get('x-forwarded-for') || request.headers.get('x-real-ip') || 'unknown'
+        ip: getClientIP(request)
       });
       
       // Return a minimal error response (not HTML)
@@ -90,14 +91,56 @@ export function middleware(request: NextRequest) {
     return response;
   }
   
+  // For non-API routes (HTML pages), only block obvious API tools
+  else {
+    const userAgent = request.headers.get('user-agent')?.toLowerCase() || '';
+    
+    // Only block very obvious API tools from HTML pages
+    const obviousApiTools = [
+      'postman',
+      'newman', 
+      'insomnia',
+      'curl',
+      'wget',
+      'httpie',
+      'python-requests'
+    ];
+    
+    const isObviousApiTool = obviousApiTools.some(tool => userAgent.includes(tool)) ||
+                           request.headers.get('postman-token') ||
+                           request.headers.get('x-postman-');
+    
+    if (isObviousApiTool) {
+      logSecurityEvent(request, 'MIDDLEWARE_BLOCKED', {
+        reason: 'Known API tool blocked from HTML access',
+        endpoint: request.nextUrl.pathname,
+        userAgent: request.headers.get('user-agent'),
+        ip: getClientIP(request)
+      });
+      
+      return new Response(JSON.stringify({ 
+        error: 'Access Denied',
+        message: 'API tools are not permitted to access this website',
+        code: 'API_TOOL_BLOCKED'
+      }), { 
+        status: 403,
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Content-Type-Options': 'nosniff'
+        }
+      });
+    }
+  }
+  
   return NextResponse.next();
 }
 
-// Configure which paths the middleware should run on - APPLY TO ALL ROUTES
+// Configure which paths the middleware should run on
 export const config = {
   matcher: [
-    // Apply to ALL routes to block API tools from accessing ANY content
-    '/((?!_next/static|_next/image|favicon.ico).*)',
-    '/api/:path*'
+    // Apply to API routes with strict security
+    '/api/:path*',
+    // Apply lighter security to all other routes
+    '/((?!_next/static|_next/image|favicon.ico).*)'
   ]
 };

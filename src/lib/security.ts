@@ -277,7 +277,7 @@ export function validateRequest(request: NextRequest): {
   };
 }
 
-// Advanced detection for API testing tools (MORE STRICT)
+// Advanced detection for API testing tools (FIXED - Allow browsers)
 export function passesAdvancedAPIToolDetection(request: NextRequest): boolean {
   const headers = request.headers;
   const userAgent = headers.get('user-agent')?.toLowerCase() || '';
@@ -286,15 +286,57 @@ export function passesAdvancedAPIToolDetection(request: NextRequest): boolean {
   const acceptEncoding = headers.get('accept-encoding') || '';
   const origin = headers.get('origin') || '';
   const referer = headers.get('referer') || '';
-  const secFetchSite = headers.get('sec-fetch-site') || '';
-  const secFetchMode = headers.get('sec-fetch-mode') || '';
-  const secFetchDest = headers.get('sec-fetch-dest') || '';
   
-  // IMMEDIATE BLOCKING for known tools
+  // ALLOW BROWSERS IMMEDIATELY - Check for browser indicators first
+  const isBrowser = 
+    userAgent.includes('mozilla') ||
+    userAgent.includes('chrome') ||
+    userAgent.includes('safari') ||
+    userAgent.includes('firefox') ||
+    userAgent.includes('edge') ||
+    userAgent.includes('opera') ||
+    accept.includes('text/html') ||
+    (acceptLanguage && acceptLanguage.length > 0) ||
+    (acceptEncoding && acceptEncoding.includes('gzip'));
+  
+  // If it looks like a browser, allow it (unless it's definitely a tool)
+  if (isBrowser) {
+    // Still block known API tools even if they try to mimic browsers
+    const definiteApiTools = [
+      'postman',
+      'newman', 
+      'insomnia',
+      'thunderclient',
+      'curl',
+      'wget',
+      'httpie',
+      'python-requests',
+      'node-fetch',
+      'axios/',
+      'okhttp'
+    ];
+    
+    for (const tool of definiteApiTools) {
+      if (userAgent.includes(tool)) {
+        return false; // Block known tools
+      }
+    }
+    
+    // Check for Postman-specific headers
+    if (headers.get('postman-token') || 
+        headers.get('x-postman-') ||
+        userAgent.includes('PostmanRuntime')) {
+      return false;
+    }
+    
+    return true; // Allow browsers
+  }
+  
+  // For non-browser requests, apply stricter checks
   const immediateBlockPatterns = [
     'postman',
     'newman',
-    'insomnia',
+    'insomnia', 
     'thunderclient',
     'paw',
     'httpie',
@@ -325,73 +367,25 @@ export function passesAdvancedAPIToolDetection(request: NextRequest): boolean {
     return false;
   }
   
-  // Check for API tool indicators
-  const apiToolIndicators = [
-    // Missing or suspicious browser headers
-    !acceptLanguage || !acceptLanguage.match(/^[a-z]{2}(-[A-Z]{2})?(,[a-z]{2}(-[A-Z]{2})?)*$/),
-    !acceptEncoding.includes('gzip'),
-    !accept.includes('text/html') && !accept.includes('*/*'),
+  // For very suspicious patterns (only block if multiple indicators)
+  const suspiciousIndicators = [
+    // Very short user agents that are not browsers
+    userAgent.length < 15 && !userAgent.includes('bot') && !userAgent.includes('mobile'),
     
-    // Missing security headers (modern browsers always send these)
-    !secFetchSite && !userAgent.includes('bot'),
-    !secFetchMode && !userAgent.includes('bot'),
-    !secFetchDest && !userAgent.includes('bot'),
+    // Simple tool patterns
+    /^[a-z\-]+\/[\d\.]+$/.test(userAgent) && !userAgent.includes('mobile'),
     
-    // Suspicious combinations
-    origin === '' && referer === '' && !userAgent.includes('bot') && !userAgent.includes('googlebot'),
-    accept === '*/*' && !acceptLanguage && !userAgent.includes('bot'),
-    userAgent.includes('electron') && !origin,
-    
-    // Check for automation frameworks
-    userAgent.includes('selenium'),
-    userAgent.includes('puppeteer'),
-    userAgent.includes('playwright'),
-    userAgent.includes('cypress'),
-    userAgent.includes('webdriver'),
-    
-    // Generic API client patterns
-    /^[a-z\-]+\/[\d\.]+$/.test(userAgent),
-    userAgent.match(/^[a-zA-Z\-]+$/) && userAgent.length < 15,
-    userAgent.length < 20 && !userAgent.includes('bot') && !userAgent.includes('mobile'),
-    
-    // Missing browser-specific headers
-    !headers.has('sec-ch-ua') && !userAgent.includes('bot'),
-    !headers.has('sec-ch-ua-mobile') && !userAgent.includes('bot'),
-    !headers.has('sec-ch-ua-platform') && !userAgent.includes('bot'),
-    
-    // Unusual accept headers for web requests
-    accept === 'application/json' && !origin && !referer,
-    accept === '*/*' && userAgent.length < 30 && !userAgent.includes('bot'),
-    
-    // Missing connection header
-    !headers.has('connection') && !userAgent.includes('bot'),
-  ];
-  
-  // Count indicators
-  const indicatorCount = apiToolIndicators.filter(Boolean).length;
-  
-  // Additional suspicious patterns
-  const suspiciousPatterns = [
-    // No browser-like characteristics
-    !userAgent.includes('Mozilla') && !userAgent.includes('Safari') && !userAgent.includes('Chrome') && !userAgent.includes('bot'),
-    
-    // User agent patterns that suggest API tools
-    /rest[_\-\s]?client/i.test(userAgent),
-    /api[_\-\s]?test/i.test(userAgent),
-    /http[_\-\s]?client/i.test(userAgent),
-    /tool/i.test(userAgent) && !userAgent.includes('webkit'),
-    
-    // Very simple user agents
-    userAgent.split(' ').length === 1 && !userAgent.includes('bot'),
-    
-    // Programming language indicators
+    // Programming language patterns
     /^(python|ruby|java|go|rust|dart|kotlin|swift)\//i.test(userAgent),
+    
+    // Missing all browser characteristics
+    !accept.includes('text/html') && !accept.includes('*/*') && !acceptLanguage && !acceptEncoding.includes('gzip'),
   ];
   
-  const suspiciousCount = suspiciousPatterns.filter(Boolean).length;
+  const suspiciousCount = suspiciousIndicators.filter(Boolean).length;
   
-  // Fail if too many indicators (threshold: 2 or more for stricter control)
-  return indicatorCount < 2 && suspiciousCount < 1;
+  // Only block if multiple strong indicators (3 or more)
+  return suspiciousCount < 3;
 }// Log security events
 export function logSecurityEvent(
   request: NextRequest, 
