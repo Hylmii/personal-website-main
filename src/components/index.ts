@@ -3,6 +3,9 @@ export { Section } from './ui/Section';
 export { SectionTitle } from './ui/SectionTitle';
 export { Button } from './ui/Button';
 
+// Security Components
+export { default as BrowserSecurity } from './BrowserSecurity';
+
 // Layout Components
 export { Header } from './Header';
 export { Footer } from './Footer';

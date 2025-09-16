@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono, Poppins, Space_Grotesk } from "next/font/google";
-import "./globals.css";
+import { Inter, Poppins, Space_Grotesk, JetBrains_Mono } from 'next/font/google';
+import './globals.css';
+import BrowserSecurity from '@/components/BrowserSecurity';
 
 const inter = Inter({
   subsets: ["latin"],
@@ -86,10 +87,100 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.ico" />
         <link rel="apple-touch-icon" href="/avatarhylmi.jpg" />
         <meta name="theme-color" content="#000000" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              // Browser Security Initialization
+              (function() {
+                // Import browser security functions
+                const script = document.createElement('script');
+                script.src = '/_next/static/chunks/browser-security.js';
+                script.onload = function() {
+                  if (typeof window.initializeBrowserSecurity === 'function') {
+                    window.initializeBrowserSecurity();
+                  }
+                };
+                document.head.appendChild(script);
+
+                // Immediate basic protection
+                let devtools = {open: false, orientation: null};
+                
+                // DevTools detection
+                setInterval(function() {
+                  if (window.outerHeight - window.innerHeight > 200 || 
+                      window.outerWidth - window.innerWidth > 200) {
+                    if (!devtools.open) {
+                      devtools.open = true;
+                      window.location.reload();
+                    }
+                  } else {
+                    devtools.open = false;
+                  }
+                }, 500);
+
+                // Disable right-click
+                document.addEventListener('contextmenu', e => e.preventDefault());
+                
+                // Block common shortcuts
+                document.addEventListener('keydown', function(e) {
+                  if (e.key === 'F12' || 
+                      (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'C' || e.key === 'J')) ||
+                      (e.ctrlKey && e.key === 'U')) {
+                    e.preventDefault();
+                    return false;
+                  }
+                });
+
+                // Console protection
+                const originalLog = console.log;
+                const originalError = console.error;
+                const originalWarn = console.warn;
+                
+                console.log = function(...args) {
+                  if (args.some(arg => typeof arg === 'string' && 
+                      (arg.includes('security') || arg.includes('token') || arg.includes('key')))) {
+                    return;
+                  }
+                  originalLog.apply(console, args);
+                };
+                
+                console.error = function(...args) {
+                  if (args.some(arg => typeof arg === 'string' && 
+                      (arg.includes('security') || arg.includes('token') || arg.includes('key')))) {
+                    return;
+                  }
+                  originalError.apply(console, args);
+                };
+
+                console.warn = function(...args) {
+                  if (args.some(arg => typeof arg === 'string' && 
+                      (arg.includes('security') || arg.includes('token') || arg.includes('key')))) {
+                    return;
+                  }
+                  originalWarn.apply(console, args);
+                };
+
+                // Text selection protection
+                document.addEventListener('selectstart', e => e.preventDefault());
+                document.addEventListener('dragstart', e => e.preventDefault());
+
+                // Source view protection
+                document.addEventListener('keydown', function(e) {
+                  if ((e.ctrlKey || e.metaKey) && e.key === 'u') {
+                    e.preventDefault();
+                    return false;
+                  }
+                });
+              })();
+            `,
+          }}
+        />
       </head>
       <body
         className={`${inter.variable} ${poppins.variable} ${spaceGrotesk.variable} ${jetBrainsMono.variable} font-sans antialiased bg-white dark:bg-gray-900 text-gray-900 dark:text-white overflow-x-hidden`}
+        style={{ userSelect: 'none', WebkitUserSelect: 'none', msUserSelect: 'none' }}
       >
+        <BrowserSecurity />
         {children}
       </body>
     </html>
