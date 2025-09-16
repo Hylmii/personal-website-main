@@ -112,7 +112,7 @@ export default function DatabaseViewer() {
         setError(result.error);
       }
     } catch (err) {
-      setError('Failed to clear test data');
+      setError('Failed to   test data');
     }
   };
 

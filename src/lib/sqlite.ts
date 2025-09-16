@@ -11,7 +11,7 @@ export function initSQLiteDatabase() {
   try {
     if (!db) {
       db = new Database(dbPath);
-      console.log('✅ SQLite database connected successfully');
+      console.log('SQLite database connected successfully');
     }
 
     // Create contacts table if it doesn't exist
@@ -32,11 +32,11 @@ export function initSQLiteDatabase() {
     `;
 
     db.exec(createContactsTable);
-    console.log('✅ SQLite contacts table created/verified successfully');
+    console.log('SQLite contacts table created/verified successfully');
 
     return true;
   } catch (error) {
-    console.error('❌ SQLite database initialization failed:', error);
+    console.error('SQLite database initialization failed:', error);
     return false;
   }
 }
@@ -78,10 +78,10 @@ export function insertSQLiteContact(contact: Omit<SQLiteContact, 'id' | 'created
       contact.status || 'new'
     );
 
-    console.log('✅ Contact saved to SQLite with ID:', result.lastInsertRowid);
+    console.log('Contact saved to SQLite with ID:', result.lastInsertRowid);
     return result.lastInsertRowid as number;
   } catch (error) {
-    console.error('❌ Failed to insert contact to SQLite:', error);
+    console.error('Failed to insert contact to SQLite:', error);
     throw error;
   }
 }
@@ -127,7 +127,7 @@ export function getSQLiteContacts(
       totalPages: Math.ceil(total / limit)
     };
   } catch (error) {
-    console.error('❌ Failed to get SQLite contacts:', error);
+    console.error('Failed to get SQLite contacts:', error);
     throw error;
   }
 }
@@ -191,7 +191,7 @@ export function getSQLiteContactStats(): any {
       topCompanies
     };
   } catch (error) {
-    console.error('❌ Failed to get SQLite contact stats:', error);
+    console.error('Failed to get SQLite contact stats:', error);
     throw error;
   }
 }
@@ -210,7 +210,7 @@ export function updateSQLiteContactStatus(id: number, status: 'new' | 'read' | '
 
     return result.changes > 0;
   } catch (error) {
-    console.error('❌ Failed to update SQLite contact status:', error);
+    console.error('Failed to update SQLite contact status:', error);
     throw error;
   }
 }
@@ -225,7 +225,7 @@ export function getSQLiteContactById(id: number): SQLiteContact | null {
 
     return contact || null;
   } catch (error) {
-    console.error('❌ Failed to get SQLite contact by ID:', error);
+    console.error('Failed to get SQLite contact by ID:', error);
     throw error;
   }
 }
@@ -240,7 +240,7 @@ export function deleteSQLiteContact(id: number): boolean {
 
     return result.changes > 0;
   } catch (error) {
-    console.error('❌ Failed to delete SQLite contact:', error);
+    console.error('Failed to delete SQLite contact:', error);
     throw error;
   }
 }
@@ -256,7 +256,7 @@ export function testSQLiteConnection(): boolean {
     
     return result !== undefined;
   } catch (error) {
-    console.error('❌ SQLite connection test failed:', error);
+    console.error('SQLite connection test failed:', error);
     return false;
   }
 }

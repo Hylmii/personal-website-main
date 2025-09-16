@@ -24,7 +24,7 @@ export async function GET(
     const isConnected = await testConnection();
     
     if (!isConnected) {
-      console.log('⚠️ MySQL failed, falling back to SQLite for contact...');
+      console.log('MySQL failed, falling back to SQLite for contact...');
       try {
         // Fallback to SQLite
         initSQLiteDatabase();
@@ -42,7 +42,7 @@ export async function GET(
           source: 'SQLite'
         });
       } catch (sqliteError) {
-        console.error('❌ SQLite contact fetch failed:', sqliteError);
+        console.error('SQLite contact fetch failed:', sqliteError);
         return NextResponse.json({ 
           error: 'Database connection failed' 
         }, { status: 500 });
@@ -98,7 +98,7 @@ export async function PATCH(
     const isConnected = await testConnection();
     
     if (!isConnected) {
-      console.log('⚠️ MySQL failed, falling back to SQLite for update...');
+      console.log('MySQL failed, falling back to SQLite for update...');
       try {
         // Fallback to SQLite
         initSQLiteDatabase();
@@ -116,7 +116,7 @@ export async function PATCH(
           source: 'SQLite'
         });
       } catch (sqliteError) {
-        console.error('❌ SQLite contact update failed:', sqliteError);
+        console.error('SQLite contact update failed:', sqliteError);
         return NextResponse.json({ 
           error: 'Database connection failed' 
         }, { status: 500 });
@@ -163,7 +163,7 @@ export async function DELETE(
     const isConnected = await testConnection();
     
     if (!isConnected) {
-      console.log('⚠️ MySQL failed, falling back to SQLite for delete...');
+      console.log('MySQL failed, falling back to SQLite for delete...');
       try {
         // Fallback to SQLite
         initSQLiteDatabase();
@@ -181,7 +181,7 @@ export async function DELETE(
           source: 'SQLite'
         });
       } catch (sqliteError) {
-        console.error('❌ SQLite contact delete failed:', sqliteError);
+        console.error('SQLite contact delete failed:', sqliteError);
         return NextResponse.json({ 
           error: 'Database connection failed' 
         }, { status: 500 });

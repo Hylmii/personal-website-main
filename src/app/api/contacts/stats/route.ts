@@ -12,7 +12,7 @@ export async function GET(request: NextRequest) {
     const isConnected = await testConnection();
     
     if (!isConnected) {
-      console.log('⚠️ MySQL failed, falling back to SQLite for stats...');
+      console.log('MySQL failed, falling back to SQLite for stats...');
       try {
         // Fallback to SQLite
         initSQLiteDatabase();
@@ -24,7 +24,7 @@ export async function GET(request: NextRequest) {
           source: 'SQLite'
         });
       } catch (sqliteError) {
-        console.error('❌ SQLite stats failed:', sqliteError);
+        console.error('SQLite stats failed:', sqliteError);
         return NextResponse.json({
           success: false,
           error: 'Database connection failed',

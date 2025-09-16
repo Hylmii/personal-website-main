@@ -2,22 +2,48 @@ import { NextRequest, NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 import { insertContact, initializeDatabase, testConnection } from '@/lib/database';
 import { insertSQLiteContact, initSQLiteDatabase, testSQLiteConnection } from '@/lib/sqlite';
+import { validateRequest, logSecurityEvent, getClientIP } from '@/lib/security';
 
 // Force dynamic rendering for this API route
 export const dynamic = 'force-dynamic';
 
 export async function POST(request: NextRequest) {
-  console.log('🔧 API /send-email called');
+  console.log('API /send-email called');
   
   try {
+    // Security validation
+    const securityCheck = validateRequest(request);
+    
+    if (!securityCheck.valid) {
+      logSecurityEvent(request, 'BLOCKED_REQUEST', {
+        reason: securityCheck.reason,
+        endpoint: '/api/send-email'
+      });
+      
+      return NextResponse.json({ 
+        message: 'Access denied',
+        error: 'Request blocked by security policy'
+      }, { 
+        status: 403,
+        headers: {
+          'X-RateLimit-Remaining': securityCheck.rateLimitInfo?.remaining.toString() || '0'
+        }
+      });
+    }
+
+    // Log successful security validation
+    logSecurityEvent(request, 'REQUEST_ALLOWED', {
+      endpoint: '/api/send-email',
+      remaining: securityCheck.rateLimitInfo?.remaining
+    });
     const body = await request.json();
-    console.log('📥 Request body received:', Object.keys(body));
+    console.log('Request body received:', Object.keys(body));
     
     const { from_name, from_email, company, subject, message } = body;
 
     // Validate required fields
     if (!from_name || !from_email || !subject || !message) {
-      console.log('❌ Validation failed - missing fields');
+      console.log('Validation failed - missing fields');
       return NextResponse.json({ 
         message: 'Missing required fields: name, email, subject, and message are required' 
       }, { status: 400 });
@@ -26,32 +52,30 @@ export async function POST(request: NextRequest) {
     // Validate email format
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(from_email)) {
-      console.log('❌ Validation failed - invalid email format');
+      console.log('Validation failed - invalid email format');
       return NextResponse.json({ 
         message: 'Invalid email format' 
       }, { status: 400 });
     }
 
     // Check if email credentials are available
-    console.log('🔑 Checking environment variables:', {
+    console.log('Checking environment variables:', {
       EMAIL_USER: process.env.EMAIL_USER ? 'SET' : 'MISSING',
       EMAIL_PASS: process.env.EMAIL_PASS ? 'SET' : 'MISSING'
     });
     
     if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
-      console.error('❌ Email credentials missing');
+      console.error('Email credentials missing');
       return NextResponse.json({ 
         message: 'Email service temporarily unavailable. Please try again later.' 
       }, { status: 503 });
     }
 
     // Get client IP and User Agent for logging
-    const clientIP = request.headers.get('x-forwarded-for') || 
-                    request.headers.get('x-real-ip') || 
-                    'unknown';
+    const clientIP = getClientIP(request);
     const userAgent = request.headers.get('user-agent') || 'unknown';
 
-    console.log('🔧 Email send attempt:', {
+    console.log('Email send attempt:', {
       from_name,
       from_email, 
       subject,
@@ -80,12 +104,12 @@ export async function POST(request: NextRequest) {
           user_agent: userAgent,
           status: 'new'
         });
-        console.log('💾 Contact saved to MySQL with ID:', contactId);
+        console.log('Contact saved to MySQL with ID:', contactId);
       } else {
         throw new Error('MySQL connection failed');
       }
     } catch (dbError) {
-      console.log('⚠️ MySQL failed, falling back to SQLite...');
+      console.log('MySQL failed, falling back to SQLite...');
       
       try {
         // Fallback to SQLite
@@ -102,9 +126,9 @@ export async function POST(request: NextRequest) {
           status: 'new'
         });
         databaseType = 'SQLite';
-        console.log('💾 Contact saved to SQLite with ID:', contactId);
+        console.log('Contact saved to SQLite with ID:', contactId);
       } catch (sqliteError) {
-        console.error('❌ Both MySQL and SQLite failed:', { dbError, sqliteError });
+        console.error('Both MySQL and SQLite failed:', { dbError, sqliteError });
         // Continue with email even if database fails
         databaseType = 'None (Database failed)';
       }
@@ -151,9 +175,9 @@ export async function POST(request: NextRequest) {
     // Test the connection first
     try {
       await transporter.verify();
-      console.log('✅ SMTP connection verified');
+      console.log('SMTP connection verified');
     } catch (smtpError) {
-      console.error('❌ SMTP connection failed:', smtpError);
+      console.error('SMTP connection failed:', smtpError);
       return NextResponse.json({ 
         message: 'Email service connection failed. Please try again later.' 
       }, { status: 503 });
@@ -189,7 +213,7 @@ export async function POST(request: NextRequest) {
         replyTo: from_email,
       });
 
-      console.log('✅ Email sent successfully:', {
+      console.log('Email sent successfully:', {
         messageId: result.messageId,
         accepted: result.accepted,
         rejected: result.rejected,
@@ -205,7 +229,7 @@ export async function POST(request: NextRequest) {
       }, { status: 200 });
 
     } catch (emailError) {
-      console.error('❌ Email sending failed:', emailError);
+      console.error('Email sending failed:', emailError);
       
       // Still return success if database save worked
       if (contactId) {
@@ -222,7 +246,7 @@ export async function POST(request: NextRequest) {
     }
 
   } catch (error) {
-    console.error('❌ General error:', error);
+    console.error('General error:', error);
     return NextResponse.json({ 
       message: 'An unexpected error occurred. Please try again later.' 
     }, { status: 500 });

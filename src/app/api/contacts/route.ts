@@ -14,6 +14,7 @@ import {
   deleteSQLiteContact,
   initSQLiteDatabase 
 } from '@/lib/sqlite';
+import { validateRequest, logSecurityEvent } from '@/lib/security';
 
 // Force dynamic rendering for this API route
 export const dynamic = 'force-dynamic';
@@ -21,6 +22,26 @@ export const dynamic = 'force-dynamic';
 // GET /api/contacts - Get all contacts with pagination
 export async function GET(request: NextRequest) {
   try {
+    // Security validation
+    const securityCheck = validateRequest(request);
+    
+    if (!securityCheck.valid) {
+      logSecurityEvent(request, 'BLOCKED_REQUEST', {
+        reason: securityCheck.reason,
+        endpoint: '/api/contacts'
+      });
+      
+      return NextResponse.json({ 
+        message: 'Access denied',
+        error: 'Request blocked by security policy'
+      }, { 
+        status: 403,
+        headers: {
+          'X-RateLimit-Remaining': securityCheck.rateLimitInfo?.remaining.toString() || '0'
+        }
+      });
+    }
+    
     // Test MySQL connection first
     const isConnected = await testConnection();
     
@@ -30,7 +51,7 @@ export async function GET(request: NextRequest) {
     const status = searchParams.get('status') || undefined;
 
     if (!isConnected) {
-      console.log('⚠️ MySQL failed, falling back to SQLite for contacts...');
+      console.log('MySQL failed, falling back to SQLite for contacts...');
       try {
         // Fallback to SQLite
         initSQLiteDatabase();
@@ -48,7 +69,7 @@ export async function GET(request: NextRequest) {
           source: 'SQLite'
         });
       } catch (sqliteError) {
-        console.error('❌ SQLite contacts failed:', sqliteError);
+        console.error('SQLite contacts failed:', sqliteError);
         return NextResponse.json({ 
           success: false,
           error: 'Database connection failed',

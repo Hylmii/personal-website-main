@@ -9,13 +9,13 @@ export const dynamic = 'force-dynamic';
 // GET /api/database/test - Test database connection and show basic info
 export async function GET(request: NextRequest) {
   try {
-    console.log('🔧 Testing database connection...');
+    console.log('Testing database connection...');
     
     // Test MySQL connection first
     const isConnected = await testConnection();
     
     if (!isConnected) {
-      console.log('⚠️ MySQL failed, falling back to SQLite for database test...');
+      console.log('MySQL failed, falling back to SQLite for database test...');
       
       try {
         // Test SQLite fallback
@@ -182,7 +182,7 @@ export async function POST(request: NextRequest) {
     const isConnected = await testConnection();
     
     if (!isConnected) {
-      console.log('⚠️ MySQL failed, falling back to SQLite for database operations...');
+      console.log('MySQL failed, falling back to SQLite for database operations...');
       
       try {
         initSQLiteDatabase();

@@ -19,11 +19,11 @@ const pool = mysql.createPool(dbConfig);
 export async function testConnection() {
   try {
     const connection = await pool.getConnection();
-    console.log('✅ Connected to MySQL database successfully');
+    console.log('Connected to MySQL database successfully');
     connection.release();
     return true;
   } catch (error) {
-    console.error('❌ Database connection failed:', error);
+    console.error('Database connection failed:', error);
     return false;
   }
 }
@@ -54,12 +54,12 @@ export async function initializeDatabase() {
     `;
     
     await connection.execute(createContactsTable);
-    console.log('✅ Contacts table created/verified successfully');
+    console.log('Contacts table created/verified successfully');
     
     connection.release();
     return true;
   } catch (error) {
-    console.error('❌ Database initialization failed:', error);
+    console.error('Database initialization failed:', error);
     return false;
   }
 }
@@ -103,11 +103,11 @@ export async function insertContact(contact: Omit<Contact, 'id' | 'created_at' |
     connection.release();
     
     const insertResult = result as mysql.ResultSetHeader;
-    console.log('✅ Contact saved to database with ID:', insertResult.insertId);
+    console.log('Contact saved to database with ID:', insertResult.insertId);
     
     return insertResult.insertId;
   } catch (error) {
-    console.error('❌ Failed to insert contact:', error);
+    console.error('Failed to insert contact:', error);
     throw error;
   }
 }
@@ -184,7 +184,7 @@ export async function getContacts(
       };
     }
   } catch (error) {
-    console.error('❌ Failed to get contacts:', error);
+    console.error('Failed to get contacts:', error);
     throw error;
   }
 }
@@ -202,7 +202,7 @@ export async function updateContactStatus(id: number, status: 'new' | 'read' | '
     const updateResult = result as mysql.ResultSetHeader;
     return updateResult.affectedRows > 0;
   } catch (error) {
-    console.error('❌ Failed to update contact status:', error);
+    console.error('Failed to update contact status:', error);
     throw error;
   }
 }
@@ -220,7 +220,7 @@ export async function getContactById(id: number): Promise<Contact | null> {
     const contacts = result as Contact[];
     return contacts.length > 0 ? contacts[0] : null;
   } catch (error) {
-    console.error('❌ Failed to get contact by ID:', error);
+    console.error('Failed to get contact by ID:', error);
     throw error;
   }
 }
@@ -238,7 +238,7 @@ export async function deleteContact(id: number): Promise<boolean> {
     const deleteResult = result as mysql.ResultSetHeader;
     return deleteResult.affectedRows > 0;
   } catch (error) {
-    console.error('❌ Failed to delete contact:', error);
+    console.error('Failed to delete contact:', error);
     throw error;
   }
 }

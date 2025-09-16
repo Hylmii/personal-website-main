@@ -49,6 +49,7 @@ export const ContactSection: React.FC = () => {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'X-CSRF-Token': window.location.origin, // Simple CSRF protection using origin
         },
         body: JSON.stringify(emailData),
       });
@@ -65,13 +66,13 @@ export const ContactSection: React.FC = () => {
           subject: '',
           message: ''
         });
-        console.log('✅ Email sent successfully:', result);
+        console.log('Email sent successfully:', result);
       } else {
-        console.error('❌ API Error:', result);
+        console.error('API Error:', result);
         throw new Error(result.message || 'Failed to send email');
       }
     } catch (error) {
-      console.error('❌ Error sending email:', error);
+      console.error('Error sending email:', error);
       setIsSubmitting(false);
       
       // Show more specific error message
