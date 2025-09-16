@@ -1,10 +1,36 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { validateRequest, logSecurityEvent, passesAdvancedAPIToolDetection, getClientIP } from './src/lib/security';
+import { 
+  analyzeSecurityThreat, 
+  createSecurityAlert,
+  isSuspiciousIP 
+} from './src/lib/security-monitor';
 
 // Middleware function
 export function middleware(request: NextRequest) {
   const isApiRoute = request.nextUrl.pathname.startsWith('/api/');
+  const clientIP = getClientIP(request);
+  
+  // Enhanced security checks for all routes
+  if (isSuspiciousIP(clientIP)) {
+    const alert = createSecurityAlert('HIGH', 'Blocked suspicious IP in middleware', request);
+    logSecurityEvent(request, 'SUSPICIOUS_IP_BLOCKED', alert.details);
+    
+    return new Response('Access Denied', { status: 403 });
+  }
+  
+  // Comprehensive threat analysis
+  const threatAnalysis = analyzeSecurityThreat(request);
+  
+  if (threatAnalysis.threatLevel === 'DANGEROUS') {
+    const alert = createSecurityAlert('CRITICAL', 'Dangerous threat blocked', request, {
+      reasons: threatAnalysis.reasons
+    });
+    logSecurityEvent(request, 'DANGEROUS_THREAT_BLOCKED', alert.details);
+    
+    return new Response('Access Denied', { status: 403 });
+  }
   
   // For API routes, apply strict security
   if (isApiRoute) {
@@ -15,12 +41,17 @@ export function middleware(request: NextRequest) {
     
     // STRICT BLOCKING for API routes - block all API tools
     if (!passesAdvancedAPIToolDetection(request)) {
+      const alert = createSecurityAlert('HIGH', 'API tool blocked by middleware', request, {
+        endpoint: request.nextUrl.pathname
+      });
+      
       logSecurityEvent(request, 'MIDDLEWARE_BLOCKED', {
         reason: 'API testing tool detected - blocked from API access',
         endpoint: request.nextUrl.pathname,
         userAgent: request.headers.get('user-agent'),
-        ip: getClientIP(request),
-        method: request.method
+        ip: clientIP,
+        method: request.method,
+        ...alert.details
       });
       
       // Return JSON error for blocked API requests
