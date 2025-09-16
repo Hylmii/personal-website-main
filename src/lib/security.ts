@@ -277,7 +277,7 @@ export function validateRequest(request: NextRequest): {
   };
 }
 
-// Advanced detection for API testing tools
+// Advanced detection for API testing tools (MORE STRICT)
 export function passesAdvancedAPIToolDetection(request: NextRequest): boolean {
   const headers = request.headers;
   const userAgent = headers.get('user-agent')?.toLowerCase() || '';
@@ -290,38 +290,56 @@ export function passesAdvancedAPIToolDetection(request: NextRequest): boolean {
   const secFetchMode = headers.get('sec-fetch-mode') || '';
   const secFetchDest = headers.get('sec-fetch-dest') || '';
   
+  // IMMEDIATE BLOCKING for known tools
+  const immediateBlockPatterns = [
+    'postman',
+    'newman',
+    'insomnia',
+    'thunderclient',
+    'paw',
+    'httpie',
+    'curl',
+    'wget',
+    'python-requests',
+    'axios/',
+    'node-fetch',
+    'okhttp',
+    'httpclient',
+    'restclient',
+    'api-test',
+    'test-runner',
+  ];
+  
+  // Block immediately if any of these patterns found
+  for (const pattern of immediateBlockPatterns) {
+    if (userAgent.includes(pattern)) {
+      return false;
+    }
+  }
+  
+  // Check for Postman-specific headers
+  if (headers.get('postman-token') || 
+      headers.get('x-postman-') ||
+      userAgent.includes('Postman') ||
+      userAgent.includes('PostmanRuntime')) {
+    return false;
+  }
+  
   // Check for API tool indicators
   const apiToolIndicators = [
     // Missing or suspicious browser headers
-    !acceptLanguage.match(/^[a-z]{2}(-[A-Z]{2})?(,[a-z]{2}(-[A-Z]{2})?)*$/),
+    !acceptLanguage || !acceptLanguage.match(/^[a-z]{2}(-[A-Z]{2})?(,[a-z]{2}(-[A-Z]{2})?)*$/),
     !acceptEncoding.includes('gzip'),
-    !accept.includes('text/html'),
-    
-    // Suspicious user agents
-    userAgent.includes('postman'),
-    userAgent.includes('insomnia'),
-    userAgent.includes('thunder'),
-    userAgent.includes('paw'),
-    userAgent.includes('httpie'),
-    userAgent.includes('curl'),
-    userAgent.includes('wget'),
-    userAgent.includes('axios'),
-    userAgent.includes('node-fetch'),
-    userAgent.includes('python-requests'),
-    userAgent.includes('okhttp'),
-    userAgent.match(/rest[_\-\s]?client/i),
-    userAgent.match(/api[_\-\s]?test/i),
-    userAgent.match(/http[_\-\s]?client/i),
-    userAgent.length < 20 && !userAgent.includes('bot'),
+    !accept.includes('text/html') && !accept.includes('*/*'),
     
     // Missing security headers (modern browsers always send these)
-    !secFetchSite,
-    !secFetchMode,
-    !secFetchDest,
+    !secFetchSite && !userAgent.includes('bot'),
+    !secFetchMode && !userAgent.includes('bot'),
+    !secFetchDest && !userAgent.includes('bot'),
     
     // Suspicious combinations
-    origin === '' && referer === '' && !userAgent.includes('bot'),
-    accept === '*/*' && !acceptLanguage,
+    origin === '' && referer === '' && !userAgent.includes('bot') && !userAgent.includes('googlebot'),
+    accept === '*/*' && !acceptLanguage && !userAgent.includes('bot'),
     userAgent.includes('electron') && !origin,
     
     // Check for automation frameworks
@@ -331,17 +349,22 @@ export function passesAdvancedAPIToolDetection(request: NextRequest): boolean {
     userAgent.includes('cypress'),
     userAgent.includes('webdriver'),
     
-    // Check for development tools
-    userAgent.includes('newman'),
-    userAgent.includes('insomnia'),
-    userAgent.includes('postman'),
-    headers.get('postman-token'),
-    headers.get('x-postman-'),
-    headers.get('user-agent')?.includes('Postman'),
-    
     // Generic API client patterns
     /^[a-z\-]+\/[\d\.]+$/.test(userAgent),
     userAgent.match(/^[a-zA-Z\-]+$/) && userAgent.length < 15,
+    userAgent.length < 20 && !userAgent.includes('bot') && !userAgent.includes('mobile'),
+    
+    // Missing browser-specific headers
+    !headers.has('sec-ch-ua') && !userAgent.includes('bot'),
+    !headers.has('sec-ch-ua-mobile') && !userAgent.includes('bot'),
+    !headers.has('sec-ch-ua-platform') && !userAgent.includes('bot'),
+    
+    // Unusual accept headers for web requests
+    accept === 'application/json' && !origin && !referer,
+    accept === '*/*' && userAgent.length < 30 && !userAgent.includes('bot'),
+    
+    // Missing connection header
+    !headers.has('connection') && !userAgent.includes('bot'),
   ];
   
   // Count indicators
@@ -350,25 +373,25 @@ export function passesAdvancedAPIToolDetection(request: NextRequest): boolean {
   // Additional suspicious patterns
   const suspiciousPatterns = [
     // No browser-like characteristics
-    !userAgent.includes('Mozilla') && !userAgent.includes('Safari') && !userAgent.includes('Chrome'),
+    !userAgent.includes('Mozilla') && !userAgent.includes('Safari') && !userAgent.includes('Chrome') && !userAgent.includes('bot'),
     
-    // Missing typical browser headers
-    !headers.has('sec-ch-ua'),
-    !headers.has('sec-ch-ua-mobile'),
-    !headers.has('sec-ch-ua-platform'),
+    // User agent patterns that suggest API tools
+    /rest[_\-\s]?client/i.test(userAgent),
+    /api[_\-\s]?test/i.test(userAgent),
+    /http[_\-\s]?client/i.test(userAgent),
+    /tool/i.test(userAgent) && !userAgent.includes('webkit'),
     
-    // Unusual accept headers for web requests
-    accept === 'application/json' && !origin && !referer,
-    accept === '*/*' && userAgent.length < 30,
+    // Very simple user agents
+    userAgent.split(' ').length === 1 && !userAgent.includes('bot'),
     
-    // Missing connection header
-    !headers.has('connection') && !headers.has('keep-alive'),
+    // Programming language indicators
+    /^(python|ruby|java|go|rust|dart|kotlin|swift)\//i.test(userAgent),
   ];
   
   const suspiciousCount = suspiciousPatterns.filter(Boolean).length;
   
-  // Fail if too many indicators (threshold: 3 or more)
-  return indicatorCount < 3 && suspiciousCount < 2;
+  // Fail if too many indicators (threshold: 2 or more for stricter control)
+  return indicatorCount < 2 && suspiciousCount < 1;
 }// Log security events
 export function logSecurityEvent(
   request: NextRequest, 

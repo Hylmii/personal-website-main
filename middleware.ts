@@ -1,10 +1,41 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { validateRequest, logSecurityEvent } from '@/lib/security';
+import { validateRequest, logSecurityEvent, passesAdvancedAPIToolDetection, getClientIP } from '@/lib/security';
 
 // Middleware function
 export function middleware(request: NextRequest) {
-  // Only apply security to API routes
+  // BLOCK POSTMAN AND API TOOLS FROM ALL ROUTES (including HTML pages)
+  if (!passesAdvancedAPIToolDetection(request)) {
+    logSecurityEvent(request, 'MIDDLEWARE_BLOCKED', {
+      reason: 'API testing tool detected - blocked from accessing any content',
+      endpoint: request.nextUrl.pathname,
+      userAgent: request.headers.get('user-agent'),
+      ip: getClientIP(request),
+      method: request.method
+    });
+    
+    // Return JSON error for ALL blocked requests (no HTML access)
+    return new Response(JSON.stringify({ 
+      error: 'Access Denied',
+      message: 'Automated tools are not permitted to access this website',
+      code: 'API_TOOL_BLOCKED',
+      timestamp: new Date().toISOString(),
+      blocked_reason: 'API testing tool detection'
+    }), { 
+      status: 403,
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Security-Policy': 'strict-no-tools',
+        'X-Content-Type-Options': 'nosniff',
+        'X-Frame-Options': 'DENY',
+        'X-XSS-Protection': '1; mode=block',
+        'Cache-Control': 'no-store, no-cache, must-revalidate',
+        'Pragma': 'no-cache'
+      }
+    });
+  }
+
+  // Apply additional security to API routes
   if (request.nextUrl.pathname.startsWith('/api/')) {
     
     // Skip security for database test endpoint (for admin use)
@@ -62,9 +93,11 @@ export function middleware(request: NextRequest) {
   return NextResponse.next();
 }
 
-// Configure which paths the middleware should run on
+// Configure which paths the middleware should run on - APPLY TO ALL ROUTES
 export const config = {
   matcher: [
+    // Apply to ALL routes to block API tools from accessing ANY content
+    '/((?!_next/static|_next/image|favicon.ico).*)',
     '/api/:path*'
   ]
 };
