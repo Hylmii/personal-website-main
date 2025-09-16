@@ -1,5 +1,5 @@
 import { NextRequest } from 'next/server';
-import { writeSecurityLog } from './security-logger';
+// import { writeSecurityLog } from './security-logger'; // Disabled for edge runtime
 import { SECURITY_CONFIG as CONFIG } from './security-config';
 
 // Rate limiting storage (in production, use Redis or database)
@@ -431,6 +431,6 @@ export function logSecurityEvent(
   // Log to console
   console.log('SECURITY EVENT:', logEntry);
   
-  // Log to file
-  writeSecurityLog(logEntry);
+  // Log to file (disabled for edge runtime compatibility)
+  // writeSecurityLog(logEntry);
 }

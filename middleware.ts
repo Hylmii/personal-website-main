@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
-import { validateRequest, logSecurityEvent, passesAdvancedAPIToolDetection, getClientIP } from '@/lib/security';
+import { validateRequest, logSecurityEvent, passesAdvancedAPIToolDetection, getClientIP } from './src/lib/security';
 
 // Middleware function
 export function middleware(request: NextRequest) {
@@ -140,7 +140,8 @@ export const config = {
   matcher: [
     // Apply to API routes with strict security
     '/api/:path*',
-    // Apply lighter security to all other routes
-    '/((?!_next/static|_next/image|favicon.ico).*)'
-  ]
+    // Apply lighter security to all other routes (simplified pattern)
+    '/((?!_next|favicon.ico|static).*)'
+  ],
+  runtime: 'edge'
 };
