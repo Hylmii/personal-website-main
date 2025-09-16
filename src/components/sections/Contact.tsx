@@ -76,7 +76,16 @@ export const ContactSection: React.FC = () => {
       
       // Show more specific error message
       const errorMessage = error instanceof Error ? error.message : 'Failed to send email. Please try again.';
-      alert(errorMessage);
+      
+      // Offer fallback to direct email
+      const useMailto = confirm(`${errorMessage}\n\nWould you like to open your email client instead?`);
+      
+      if (useMailto) {
+        const mailtoUrl = `mailto:hylmir25@gmail.com?subject=${encodeURIComponent(formData.subject)}&body=${encodeURIComponent(
+          `Name: ${formData.name}\nEmail: ${formData.email}\nCompany: ${formData.company}\n\nMessage:\n${formData.message}`
+        )}`;
+        window.open(mailtoUrl, '_blank');
+      }
     }
   };
 
