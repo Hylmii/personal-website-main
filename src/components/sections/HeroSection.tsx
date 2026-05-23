@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
+import { BriefcaseIcon, CheckIcon } from '@heroicons/react/24/outline';
 import { Button } from '../ui/Button';
 import { Section } from '../ui/Section';
 import { personalInfo } from '@/data/portfolio';
@@ -152,11 +153,11 @@ export const HeroSection: React.FC = () => {
                 </div>
                 
                 {/* Floating elements */}
-                <div className="absolute -top-4 -right-4 w-12 h-12 bg-blue-600 rounded-2xl flex items-center justify-center text-white text-xl shadow-lg">
-                  💼
+                <div className="absolute -top-4 -right-4 w-12 h-12 bg-blue-600 rounded-2xl flex items-center justify-center text-white shadow-lg">
+                  <BriefcaseIcon className="w-6 h-6" strokeWidth={2} />
                 </div>
-                <div className="absolute -bottom-4 -left-4 w-12 h-12 bg-green-500 rounded-2xl flex items-center justify-center text-white text-xl shadow-lg">
-                  ✓
+                <div className="absolute -bottom-4 -left-4 w-12 h-12 bg-green-500 rounded-2xl flex items-center justify-center text-white shadow-lg">
+                  <CheckIcon className="w-6 h-6" strokeWidth={2.5} />
                 </div>
               </div>
             </motion.div>

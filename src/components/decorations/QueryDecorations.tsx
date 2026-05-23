@@ -18,8 +18,8 @@ export const QueryDecorations: React.FC = () => {
   useEffect(() => {
     const elements: FloatingElement[] = [];
     const queryElements = [
-      '{ }', 'SELECT *', 'FROM', 'WHERE', '⚡', '🔍', '→', '←', '↑', '↓',
-      '[ ]', '( )', 'JOIN', 'ORDER BY', '⚙️', '🔗', '◆', '◇', '●', '○'
+      '{ }', 'SELECT *', 'FROM', 'WHERE', '*', '?', '->', '<-', 'ASC', 'DESC',
+      '[ ]', '( )', 'JOIN', 'ORDER BY', '#', 'AS', '/*', '*/', '||', '&&'
     ];
 
     for (let i = 0; i < 15; i++) {

@@ -30,25 +30,25 @@ export const HeroQueryElements: React.FC = () => {
 
       {/* Floating search icons */}
       <motion.div
-        className="absolute top-1/3 left-1/4 text-blue-600 opacity-70 text-2xl"
+        className="absolute top-1/3 left-1/4 text-blue-600 opacity-70 font-mono text-2xl font-bold"
         animate={{ 
           scale: [1, 1.2, 1],
           rotate: [0, 360] 
         }}
         transition={{ duration: 8, repeat: Infinity }}
       >
-        🔍
+        SELECT
       </motion.div>
 
       <motion.div
-        className="absolute top-2/3 right-1/4 text-blue-500 opacity-60 text-xl"
+        className="absolute top-2/3 right-1/4 text-blue-500 opacity-60 font-mono text-xl font-bold"
         animate={{ 
           y: [0, -15, 0],
           x: [0, 10, 0] 
         }}
         transition={{ duration: 5, repeat: Infinity, delay: 2 }}
       >
-        ⚡
+        WHERE
       </motion.div>
 
       {/* Bracket decorations */}
@@ -173,11 +173,11 @@ export const SkillsQueryElements: React.FC = () => {
       </motion.div>
 
       <motion.div
-        className="absolute top-2/3 right-5 text-blue-400 opacity-20 text-xl"
+        className="absolute top-2/3 right-5 text-blue-400 opacity-20 font-mono text-xl font-bold"
         animate={{ scale: [1, 1.2, 1] }}
         transition={{ duration: 4, repeat: Infinity, delay: 2 }}
       >
-        ⚙️
+        {'#'}
       </motion.div>
     </div>
   );
@@ -243,11 +243,11 @@ export const PortfolioQueryElements: React.FC = () => {
 
       {/* Project symbols */}
       <motion.div
-        className="absolute top-1/4 right-10 text-blue-300 opacity-25 text-2xl"
+        className="absolute top-1/4 right-10 text-blue-300 opacity-25 font-mono text-2xl font-bold"
         animate={{ scale: [1, 1.15, 1] }}
         transition={{ duration: 5, repeat: Infinity }}
       >
-        🔗
+        JOIN
       </motion.div>
 
       <motion.div
@@ -282,19 +282,19 @@ export const ContactQueryElements: React.FC = () => {
 
       {/* Communication symbols */}
       <motion.div
-        className="absolute top-1/3 left-10 text-blue-300 opacity-25 text-2xl"
+        className="absolute top-1/3 left-10 text-blue-300 opacity-25 font-mono text-3xl font-bold"
         animate={{ scale: [1, 1.2, 1] }}
         transition={{ duration: 4, repeat: Infinity }}
       >
-        📧
+        {'@'}
       </motion.div>
 
       <motion.div
-        className="absolute bottom-1/3 right-10 text-blue-400 opacity-20 text-xl"
+        className="absolute bottom-1/3 right-10 text-blue-400 opacity-20 font-mono text-xl font-bold"
         animate={{ y: [0, -10, 0] }}
         transition={{ duration: 5, repeat: Infinity, delay: 2 }}
       >
-        💬
+        {'//'}
       </motion.div>
     </div>
   );

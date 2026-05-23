@@ -1,10 +1,10 @@
 # Deployment Instructions
 
-## Sistem Keamanan Sudah Terdeploy! 🚀
+## Sistem Keamanan Sudah Terdeploy
 
 Code security system sudah berhasil di-push dan akan otomatis terdeploy ke Vercel.
 
-## ✅ Yang Sudah Berhasil:
+## Yang Sudah Berhasil:
 
 ### 1. Security System Implemented
 - **Rate Limiting**: 10 requests per 15 menit per IP
@@ -22,7 +22,7 @@ Code security system sudah berhasil di-push dan akan otomatis terdeploy ke Verce
 - `src/lib/security-logger.ts` - Logging system
 - `src/app/api/security/logs/route.ts` - Admin monitoring
 
-## 🔧 Environment Variables yang Perlu Diset di Vercel
+## Environment Variables yang Perlu Diset di Vercel
 
 Untuk contact form berfungsi penuh, set di Vercel Dashboard > Settings > Environment Variables:
 
@@ -39,9 +39,9 @@ DB_PASSWORD=your_mysql_password
 DB_NAME=portfolio_db
 ```
 
-## 🎯 Testing Security
+## Testing Security
 
-### ❌ Request yang akan DIBLOKIR:
+### Request yang akan DIBLOKIR:
 ```bash
 # Postman
 curl -X POST https://hylmirafif.me/api/send-email/ \
@@ -53,7 +53,7 @@ curl -X POST https://hylmirafif.me/api/send-email/
 # Rate limit (setelah 10 requests)
 ```
 
-### ✅ Request yang akan DITERIMA:
+### Request yang akan DITERIMA:
 ```bash
 # Browser dengan headers lengkap
 curl -X POST https://hylmirafif.me/api/send-email/ \
@@ -64,7 +64,7 @@ curl -X POST https://hylmirafif.me/api/send-email/ \
   -H "X-CSRF-Token: https://hylmirafif.me"
 ```
 
-## 🛡️ Security Features Active
+## Security Features Active
 
 1. **Middleware Protection** - Aktif untuk semua `/api/*`
 2. **Rate Limiting** - 10 req/15min per IP
@@ -74,7 +74,7 @@ curl -X POST https://hylmirafif.me/api/send-email/ \
 6. **Browser Detection** - Legitimate browser check
 7. **Security Logging** - Real-time monitoring
 
-## 📊 Admin Monitoring
+## Admin Monitoring
 
 Access security logs:
 ```
@@ -85,26 +85,26 @@ Authorization: Basic aHlsbWk6YWRtaW4yMDI0
 GET https://hylmirafif.me/api/security/logs?action=analyze
 ```
 
-## 🔄 Status Deployment
+## Status Deployment
 
-- ✅ Code pushed ke GitHub
-- ✅ Security system implemented
-- ✅ Middleware aktif
-- ⚠️ Environment variables perlu diset di Vercel
-- ⚠️ Contact form perlu EMAIL_USER & EMAIL_PASS
+- Code pushed ke GitHub
+- Security system implemented
+- Middleware aktif
+- Environment variables perlu diset di Vercel
+- Contact form perlu EMAIL_USER & EMAIL_PASS
 
-## 🎉 Hasil
+## Hasil
 
 Website Anda sekarang **AMAN** dari:
-- ❌ Postman requests
-- ❌ Insomnia requests  
-- ❌ curl/wget attacks
-- ❌ API scraping tools
-- ❌ Unauthorized access
-- ❌ Rate limit attacks
-- ❌ CSRF attacks
+- Postman requests
+- Insomnia requests
+- curl/wget attacks
+- API scraping tools
+- Unauthorized access
+- Rate limit attacks
+- CSRF attacks
 
-Hanya **browser legitimate** yang bisa menggunakan contact form! 🛡️
+Hanya **browser legitimate** yang bisa menggunakan contact form.
 
 ---
 
@@ -112,4 +112,4 @@ Hanya **browser legitimate** yang bisa menggunakan contact form! 🛡️
 1. Set environment variables di Vercel dashboard
 2. Test contact form dari browser
 3. Monitor security logs via admin endpoint
-4. Enjoy secure API! 🚀
+4. Enjoy secure API.

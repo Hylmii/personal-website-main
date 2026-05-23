@@ -2,7 +2,7 @@
 
 # Portfolio Database Setup Script for MySQL
 
-echo "🚀 Portfolio Database Setup for MySQL"
+echo "Portfolio Database Setup for MySQL"
 echo "====================================="
 
 # Colors for output
@@ -14,19 +14,19 @@ NC='\033[0m' # No Color
 
 # Function to print colored output
 print_status() {
-    echo -e "${GREEN}✅ $1${NC}"
+    echo -e "${GREEN}[OK]${NC} $1"
 }
 
 print_warning() {
-    echo -e "${YELLOW}⚠️  $1${NC}"
+    echo -e "${YELLOW}[WARN]${NC} $1"
 }
 
 print_error() {
-    echo -e "${RED}❌ $1${NC}"
+    echo -e "${RED}[ERROR]${NC} $1"
 }
 
 print_info() {
-    echo -e "${BLUE}ℹ️  $1${NC}"
+    echo -e "${BLUE}[INFO]${NC} $1"
 }
 
 # Check if MySQL is installed
@@ -167,21 +167,21 @@ const { testConnection, initializeDatabase } = require('./src/lib/database.ts');
   try {
     const connected = await testConnection();
     if (connected) {
-      console.log('✅ Application database connection successful');
+      console.log('[OK] Application database connection successful');
       const initialized = await initializeDatabase();
       if (initialized) {
-        console.log('✅ Database tables created successfully');
+        console.log('[OK] Database tables created successfully');
       } else {
-        console.log('❌ Failed to create database tables');
+        console.log('[ERROR] Failed to create database tables');
         process.exit(1);
       }
     } else {
-      console.log('❌ Application database connection failed');
+      console.log('[ERROR] Application database connection failed');
       process.exit(1);
     }
     process.exit(0);
   } catch (error) {
-    console.log('❌ Error:', error.message);
+    console.log('[ERROR]', error.message);
     process.exit(1);
   }
 })();

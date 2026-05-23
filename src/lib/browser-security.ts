@@ -100,7 +100,7 @@ function handleDevToolsOpen() {
   // Clear console
   if (typeof console !== 'undefined') {
     console.clear();
-    console.log('%c🛡️ Security Notice', 'color: red; font-size: 20px; font-weight: bold;');
+    console.log('%c[SECURITY NOTICE]', 'color: red; font-size: 20px; font-weight: bold;');
     console.log('%cThis website is protected. Unauthorized access attempts are logged.', 'color: red; font-size: 14px;');
     console.log('%cFor legitimate security research, please contact: hylmir25@gmail.com', 'color: orange; font-size: 12px;');
   }
@@ -223,6 +223,6 @@ export function initBrowserSecurity() {
   metaCSP.content = "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline';";
   document.head.appendChild(metaCSP);
   
-  console.log('%c🛡️ Browser Security Activated', 'color: green; font-size: 16px; font-weight: bold;');
+  console.log('%c[BROWSER SECURITY ACTIVATED]', 'color: green; font-size: 16px; font-weight: bold;');
   console.log('%cWebsite protected against inspection and data extraction', 'color: blue; font-size: 12px;');
 }

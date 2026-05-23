@@ -15,7 +15,23 @@ import {
   StarIcon,
   CheckCircleIcon,
   XMarkIcon,
-  InformationCircleIcon
+  InformationCircleIcon,
+  DevicePhoneMobileIcon,
+  GlobeAltIcon,
+  CodeBracketIcon,
+  ServerIcon,
+  WrenchScrewdriverIcon,
+  BeakerIcon,
+  BoltIcon,
+  GlobeAmericasIcon,
+  MagnifyingGlassIcon,
+  LockClosedIcon,
+  ExclamationTriangleIcon,
+  BellAlertIcon,
+  ClipboardDocumentListIcon,
+  ArrowTrendingUpIcon,
+  FlagIcon,
+  RocketLaunchIcon
 } from '@heroicons/react/24/outline';
 
 const skillCategories = [
@@ -435,14 +451,14 @@ export const SkillsSection: React.FC = () => {
           
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { name: "Mobile App Development", level: "Expert", icon: "📱" },
-              { name: "Web Development", level: "Expert", icon: "🌐" },
-              { name: "React", level: "Expert", icon: "⚛️" },
-              { name: "Node.js", level: "Advanced", icon: "🟢" },
-              { name: "DevOps", level: "Intermediate", icon: "🔧" },
-              { name: "QA Engineering", level: "Advanced", icon: "🧪" },
-              { name: "Next.js", level: "Expert", icon: "▲" },
-              { name: "Netlify", level: "Intermediate", icon: "🌍" }
+              { name: "Mobile App Development", level: "Expert", icon: DevicePhoneMobileIcon },
+              { name: "Web Development", level: "Expert", icon: GlobeAltIcon },
+              { name: "React", level: "Expert", icon: CodeBracketIcon },
+              { name: "Node.js", level: "Advanced", icon: ServerIcon },
+              { name: "DevOps", level: "Intermediate", icon: WrenchScrewdriverIcon },
+              { name: "QA Engineering", level: "Advanced", icon: BeakerIcon },
+              { name: "Next.js", level: "Expert", icon: BoltIcon },
+              { name: "Netlify", level: "Intermediate", icon: GlobeAmericasIcon }
             ].map((skill, index) => (
               <motion.div
                 key={skill.name}
@@ -453,8 +469,8 @@ export const SkillsSection: React.FC = () => {
                 className="group bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-blue-200 transform hover:-translate-y-2"
               >
                 <div className="text-center">
-                  <div className="text-3xl mb-3 group-hover:scale-110 transition-transform duration-300">
-                    {skill.icon}
+                  <div className="mb-4 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                    <skill.icon className="w-10 h-10 text-blue-600" strokeWidth={1.5} />
                   </div>
                   <h4 className="font-semibold text-gray-800 text-sm mb-3">{skill.name}</h4>
                   <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${
@@ -485,12 +501,12 @@ export const SkillsSection: React.FC = () => {
           
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
-              { name: "Cybersecurity", level: "Expert", icon: "🛡️" },
-              { name: "Penetration Testing", level: "Advanced", icon: "🔍" },
-              { name: "Security Analysis", level: "Expert", icon: "📊" },
-              { name: "Vulnerability Assessment", level: "Advanced", icon: "🔐" },
-              { name: "Risk Assessment", level: "Expert", icon: "⚠️" },
-              { name: "Incident Response", level: "Advanced", icon: "🚨" }
+              { name: "Cybersecurity", level: "Expert", icon: ShieldCheckIcon },
+              { name: "Penetration Testing", level: "Advanced", icon: MagnifyingGlassIcon },
+              { name: "Security Analysis", level: "Expert", icon: ChartBarIcon },
+              { name: "Vulnerability Assessment", level: "Advanced", icon: LockClosedIcon },
+              { name: "Risk Assessment", level: "Expert", icon: ExclamationTriangleIcon },
+              { name: "Incident Response", level: "Advanced", icon: BellAlertIcon }
             ].map((skill, index) => (
               <motion.div
                 key={skill.name}
@@ -501,8 +517,8 @@ export const SkillsSection: React.FC = () => {
                 className="group bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-red-200 transform hover:-translate-y-2"
               >
                 <div className="text-center">
-                  <div className="text-3xl mb-3 group-hover:scale-110 transition-transform duration-300">
-                    {skill.icon}
+                  <div className="mb-4 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                    <skill.icon className="w-10 h-10 text-red-600" strokeWidth={1.5} />
                   </div>
                   <h4 className="font-semibold text-gray-800 text-sm mb-3">{skill.name}</h4>
                   <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${
@@ -533,11 +549,11 @@ export const SkillsSection: React.FC = () => {
           
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
-              { name: "Project Management", level: "Expert", icon: "📋" },
-              { name: "Business Development", level: "Advanced", icon: "📈" },
-              { name: "Leadership", level: "Expert", icon: "👥" },
-              { name: "Strategic Planning", level: "Advanced", icon: "🎯" },
-              { name: "Entrepreneurship", level: "Expert", icon: "🚀" }
+              { name: "Project Management", level: "Expert", icon: ClipboardDocumentListIcon },
+              { name: "Business Development", level: "Advanced", icon: ArrowTrendingUpIcon },
+              { name: "Leadership", level: "Expert", icon: UserGroupIcon },
+              { name: "Strategic Planning", level: "Advanced", icon: FlagIcon },
+              { name: "Entrepreneurship", level: "Expert", icon: RocketLaunchIcon }
             ].map((skill, index) => (
               <motion.div
                 key={skill.name}
@@ -548,8 +564,8 @@ export const SkillsSection: React.FC = () => {
                 className="group bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 hover:border-green-200 transform hover:-translate-y-2"
               >
                 <div className="text-center">
-                  <div className="text-3xl mb-3 group-hover:scale-110 transition-transform duration-300">
-                    {skill.icon}
+                  <div className="mb-4 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                    <skill.icon className="w-10 h-10 text-green-700" strokeWidth={1.5} />
                   </div>
                   <h4 className="font-semibold text-gray-800 text-sm mb-3">{skill.name}</h4>
                   <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold ${

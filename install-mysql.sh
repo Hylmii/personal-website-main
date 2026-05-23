@@ -2,7 +2,7 @@
 
 # Install MySQL on macOS using Homebrew
 
-echo "🗄️ MySQL Installation Script for macOS"
+echo "MySQL Installation Script for macOS"
 echo "======================================"
 
 # Colors
@@ -13,19 +13,19 @@ BLUE='\033[0;34m'
 NC='\033[0m' # No Color
 
 print_status() {
-    echo -e "${GREEN}✅ $1${NC}"
+    echo -e "${GREEN}[OK]${NC} $1"
 }
 
 print_warning() {
-    echo -e "${YELLOW}⚠️  $1${NC}"
+    echo -e "${YELLOW}[WARN]${NC} $1"
 }
 
 print_error() {
-    echo -e "${RED}❌ $1${NC}"
+    echo -e "${RED}[ERROR]${NC} $1"
 }
 
 print_info() {
-    echo -e "${BLUE}ℹ️  $1${NC}"
+    echo -e "${BLUE}[INFO]${NC} $1"
 }
 
 # Check if Homebrew is installed

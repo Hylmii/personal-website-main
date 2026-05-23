@@ -338,7 +338,7 @@ export default function DatabaseViewer() {
             <div className="bg-white p-6 rounded-lg shadow">
               <h2 className="text-xl font-semibold mb-4 text-gray-900">Connection Status</h2>
               <div className={`p-4 rounded ${dbInfo.success ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
-                {dbInfo.success ? '✅ Connected Successfully' : '❌ Connection Failed'}
+                {dbInfo.success ? 'Connected Successfully' : 'Connection Failed'}
               </div>
             </div>
 

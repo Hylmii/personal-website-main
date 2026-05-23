@@ -2,46 +2,46 @@
 
 A modern, responsive personal portfolio website showcasing my experience as a Technology & Cybersecurity Professional. Built with Next.js 15, TypeScript, and featuring a secure admin dashboard with contact management system.
 
-## 🛡️ SECURITY NOTICE
+## SECURITY NOTICE
 
 **This portfolio includes protected admin areas. Default credentials MUST be changed before deployment:**
 
 - **Admin Username**: `hylmi` 
 - **Admin Password**: `admin2024`
 
-**🚨 CRITICAL**: Change these credentials in `src/app/admin/page.tsx` and `src/app/database/page.tsx` before deploying to production!
+**CRITICAL**: Change these credentials in `src/app/admin/page.tsx` and `src/app/database/page.tsx` before deploying to production!
 
-## 🚀 Features
+## Features
 
-### 🎨 Design & Interface
+### Design & Interface
 - **Modern Design**: Clean, professional layout with gradient effects
 - **Responsive**: Fully responsive design for all devices  
 - **Interactive**: Smooth animations with Framer Motion
 - **Query Theme**: Database/coding themed decorative elements
 
-### 📧 Contact System
+### Contact System
 - **Contact Form**: Functional contact form with validation
 - **Email Integration**: Automated email sending via Nodemailer
 - **Database Storage**: All messages saved to database (MySQL/SQLite)
 - **Status Tracking**: Message status management
 
-### 🔒 Admin Dashboard
+### Admin Dashboard
 - **Authentication**: Username/password protected access
 - **Contact Management**: View, update, and manage all submissions
 - **Statistics**: Dashboard with contact analytics
 - **Database Viewer**: Direct database inspection tools
 - **CRUD Operations**: Full contact management capabilities
 
-### 💾 Database System
+### Database System
 - **Dual Database**: MySQL primary with SQLite fallback
 - **Automatic Setup**: Database tables created automatically
 - **Error Handling**: Robust error handling and recovery
 
-## 🔧 Quick Setup
+## Quick Setup
 
 ### 1. Installation
 
-## 🚀 Professional Highlights
+## Professional Highlights
 
 - **Current Role**: Chairperson at Nextzenith Ventures MiRoom
 - **Background**: Cybersecurity, Project Management, Business Development
@@ -95,7 +95,7 @@ Access:
 - Admin: http://localhost:3000/admin
 - Database: http://localhost:3000/database
 
-## 🚀 Deployment to Vercel
+## Deployment to Vercel
 
 ### 1. Prepare for Deployment
 ```bash
@@ -130,12 +130,12 @@ EMAIL_PASS=your-gmail-app-password
 
 ### 4. Verify Deployment
 
-1. ✅ Portfolio loads correctly
-2. ✅ Contact form sends emails
-3. ✅ Admin login works with your new credentials
-4. ✅ Database operations function properly
+1. Portfolio loads correctly
+2. Contact form sends emails
+3. Admin login works with your new credentials
+4. Database operations function properly
 
-## 🔒 Security Features
+## Security Features
 
 ### Protected Routes
 - `/admin` - Admin dashboard (authentication required)
@@ -154,7 +154,7 @@ EMAIL_PASS=your-gmail-app-password
 - [ ] Tested authentication in production
 - [ ] Verified no sensitive data exposed
 
-## 🧑‍💼 About Hylmi Rafif Rabbani
+## About Hylmi Rafif Rabbani
 
 This portfolio represents my professional journey in technology and cybersecurity, featuring:
 
@@ -167,7 +167,7 @@ This portfolio represents my professional journey in technology and cybersecurit
 - **Education**: BINUS University (Cybersecurity), Harvard Business School, Purwadhika
 - **Entrepreneur**: Founder of Kedai Mas Yo & Cafe & Angkringan Bawah Kabel
 
-## 📧 Contact Information
+## Contact Information
 
 - **Email**: hylmi.rabbani@binus.ac.id
 - **LinkedIn**: [linkedin.com/in/hylmiirafif](https://www.linkedin.com/in/hylmiirafif/)
@@ -177,25 +177,25 @@ This portfolio represents my professional journey in technology and cybersecurit
 - **Location**: West Jakarta, Jakarta, Indonesia
 - **Phone**: +62 857 1777 5232
 
-## 📋 Portfolio Sections
+## Portfolio Sections
 
-### 🏠 Hero Section
+### Hero Section
 - Name and job title
 - Professional photo/avatar
 - Brief introduction
 - Call-to-action buttons
 
-### 👤 About Me
+### About Me
 - Personal bio
 - Core skills highlights
 - Work values and principles
 
-### 🛠️ Skills
+### Skills
 - **Frontend**: HTML, CSS, JavaScript, React, Next.js, Tailwind CSS
 - **Backend**: Node.js, Express.js, PostgreSQL, MongoDB
 - **DevOps & Tools**: Git, Docker, AWS, Vercel
 
-### 💼 Portfolio
+### Portfolio
 - Project showcase with STAR method format:
   - **Situation**: Project context
   - **Task**: Objectives and goals
@@ -204,23 +204,23 @@ This portfolio represents my professional journey in technology and cybersecurit
 - Live demo and source code links
 - Technology stack for each project
 
-### 💼 Experience
+### Experience
 - Work history timeline
 - Job positions and companies
 - Key responsibilities and achievements
 - Career progression
 
-### 💬 Testimonials
+### Testimonials
 - Client and colleague feedback
 - Professional recommendations
 - Star ratings and reviews
 
-### 📧 Contact
+### Contact
 - Contact form with validation
 - Social media links (Email, LinkedIn, GitHub, Instagram, YouTube)
 - Quick response information
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **Framework**: Next.js 15 (App Router)
 - **Styling**: Tailwind CSS
@@ -230,7 +230,7 @@ This portfolio represents my professional journey in technology and cybersecurit
 - **TypeScript**: Full type safety
 - **Font**: Inter (Google Fonts)
 
-## 🚦 Getting Started
+## Getting Started
 
 1. **Clone the repository**
    ```bash
@@ -251,7 +251,7 @@ This portfolio represents my professional journey in technology and cybersecurit
 4. **Open in browser**
    Navigate to [http://localhost:3000](http://localhost:3000)
 
-## 📝 Customization
+## Customization
 
 ### 1. Personal Information
 Edit `/src/data/portfolio.ts` to update:
@@ -278,7 +278,7 @@ Replace placeholder images in `/public/` folder:
 - Modify section components in `/src/components/sections/`
 - Update navigation in `/src/components/Header.tsx`
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 portfolio-hylmi/
@@ -302,7 +302,7 @@ portfolio-hylmi/
 └── README.md
 ```
 
-## 🎨 Design Principles
+## Design Principles
 
 - **Clean & Modern**: Minimalist design with focus on content
 - **User Experience**: Smooth animations and intuitive navigation
@@ -310,21 +310,21 @@ portfolio-hylmi/
 - **Performance**: Optimized images and lazy loading
 - **Mobile First**: Responsive design for all screen sizes
 
-## 📱 Responsive Design
+## Responsive Design
 
 - **Mobile**: Optimized for phones (320px+)
 - **Tablet**: Enhanced layout for tablets (768px+)
 - **Desktop**: Full-featured experience (1024px+)
 - **Large Screens**: Utilizes large displays (1440px+)
 
-## 🔧 Available Scripts
+## Available Scripts
 
 - `npm run dev` - Start development server
 - `npm run build` - Build for production
 - `npm run start` - Start production server
 - `./clean-restart.sh` - Clean cache and restart (if needed)
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### Next.js Multiple Lockfiles Warning
 If you see a warning about multiple package-lock.json files, this has been fixed with:
@@ -354,14 +354,14 @@ EMAIL_USER=your-email@gmail.com
 EMAIL_PASS=your-app-password
 ```
 
-## 📄 License
+## License
 
 This project is open source and available under the [MIT License](LICENSE).
 
-## 🤝 Contributing
+## Contributing
 
 Feel free to submit issues and enhancement requests!
 
-## 📞 Support
+## Support
 
 If you need help customizing this portfolio, feel free to reach out through the contact form or social media links.
