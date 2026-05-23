@@ -348,9 +348,9 @@ export default function AdminDashboard() {
             {error}
             <button 
               onClick={() => setError('')}
-              className="float-right text-red-500 hover:text-red-700"
+              className="float-right text-red-500 hover:text-red-700 font-bold"
             >
-              ×
+              Close
             </button>
           </div>
         )}
@@ -544,9 +544,9 @@ export default function AdminDashboard() {
               </div>
               <button
                 onClick={closeDetailModal}
-                className="text-gray-400 hover:text-gray-600 text-2xl"
+                className="text-gray-400 hover:text-gray-600 text-sm font-semibold"
               >
-                ×
+                Close
               </button>
             </div>
 

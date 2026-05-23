@@ -40,9 +40,9 @@ else
     print_error "MySQL is not installed"
     echo ""
     print_info "Please install MySQL first:"
-    echo "  • macOS: brew install mysql"
-    echo "  • Ubuntu: sudo apt-get install mysql-server"
-    echo "  • Windows: Download from https://dev.mysql.com/downloads/mysql/"
+    echo "  - macOS: brew install mysql"
+    echo "  - Ubuntu: sudo apt-get install mysql-server"
+    echo "  - Windows: Download from https://dev.mysql.com/downloads/mysql/"
     exit 1
 fi
 

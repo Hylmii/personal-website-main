@@ -18,8 +18,9 @@ export const QueryDecorations: React.FC = () => {
   useEffect(() => {
     const elements: FloatingElement[] = [];
     const queryElements = [
-      '{ }', 'SELECT *', 'FROM', 'WHERE', '*', '?', '->', '<-', 'ASC', 'DESC',
-      '[ ]', '( )', 'JOIN', 'ORDER BY', '#', 'AS', '/*', '*/', '||', '&&'
+      'SELECT', 'FROM', 'WHERE', 'JOIN', 'INNER', 'LEFT', 'RIGHT', 'OUTER',
+      'GROUP BY', 'ORDER BY', 'HAVING', 'LIMIT', 'OFFSET', 'AS', 'ON',
+      'AND', 'OR', 'NOT', 'IN', 'EXISTS', 'DISTINCT', 'COUNT', 'SUM', 'AVG'
     ];
 
     for (let i = 0; i < 15; i++) {

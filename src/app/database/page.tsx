@@ -283,9 +283,9 @@ export default function DatabaseViewer() {
             {error}
             <button 
               onClick={() => setError('')}
-              className="float-right text-red-500 hover:text-red-700"
+              className="float-right text-red-500 hover:text-red-700 font-bold"
             >
-              ×
+              Close
             </button>
           </div>
         )}
@@ -507,7 +507,7 @@ export default function DatabaseViewer() {
                     onClick={() => setShowAllContacts(false)}
                     className="text-gray-500 hover:text-gray-700"
                   >
-                    Hide ×
+                    Hide
                   </button>
                 </div>
                 
@@ -649,7 +649,7 @@ export default function DatabaseViewer() {
             <div>
               <h3 className="font-semibold">4. View Admin Dashboard:</h3>
               <a href="/admin" className="text-blue-600 hover:underline">
-                Go to Admin Dashboard →
+                Go to Admin Dashboard
               </a>
             </div>
           </div>

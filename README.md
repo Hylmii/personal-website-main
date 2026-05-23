@@ -121,7 +121,7 @@ vercel --prod
 
 ### 3. Configure Environment Variables in Vercel
 
-Add these in Vercel Dashboard → Project → Settings → Environment Variables:
+Add these in Vercel Dashboard > Project > Settings > Environment Variables:
 
 ```
 EMAIL_USER=your-gmail@gmail.com
@@ -282,24 +282,24 @@ Replace placeholder images in `/public/` folder:
 
 ```
 portfolio-hylmi/
-├── public/                 # Static assets
-│   ├── placeholder-*.svg  # Placeholder images
-│   └── ...
-├── src/
-│   ├── app/               # Next.js App Router
-│   │   ├── layout.tsx     # Root layout
-│   │   ├── page.tsx       # Home page
-│   │   └── globals.css    # Global styles
-│   ├── components/        # React components
-│   │   ├── sections/      # Page sections
-│   │   ├── ui/           # Reusable UI components
-│   │   ├── Header.tsx    # Navigation header
-│   │   ├── Footer.tsx    # Page footer
-│   │   └── index.ts      # Component exports
-│   └── data/
-│       └── portfolio.ts   # Portfolio data and types
-├── package.json
-└── README.md
+|-- public/                  # Static assets
+|   |-- placeholder-*.svg    # Placeholder images
+|   `-- ...
+|-- src/
+|   |-- app/                 # Next.js App Router
+|   |   |-- layout.tsx       # Root layout
+|   |   |-- page.tsx         # Home page
+|   |   `-- globals.css      # Global styles
+|   |-- components/          # React components
+|   |   |-- sections/        # Page sections
+|   |   |-- ui/              # Reusable UI components
+|   |   |-- Header.tsx       # Navigation header
+|   |   |-- Footer.tsx       # Page footer
+|   |   `-- index.ts         # Component exports
+|   `-- data/
+|       `-- portfolio.ts     # Portfolio data and types
+|-- package.json
+`-- README.md
 ```
 
 ## Design Principles

@@ -99,7 +99,7 @@ export const HeroQueryElements: React.FC = () => {
         }}
         transition={{ duration: 5, repeat: Infinity, delay: 1 }}
       >
-        // Available for opportunities
+        {'// Available for opportunities'}
       </motion.div>
     </div>
   );
@@ -122,23 +122,6 @@ export const AboutQueryElements: React.FC = () => {
         transition={{ duration: 5, repeat: Infinity }}
       >
         WHERE passion = true AND dedication = 'maximum'
-      </motion.div>
-
-      {/* Data visualization elements */}
-      <motion.div
-        className="absolute top-1/3 right-10 text-blue-300 opacity-25 text-lg"
-        animate={{ rotate: [0, 180, 360] }}
-        transition={{ duration: 10, repeat: Infinity }}
-      >
-        ◆
-      </motion.div>
-
-      <motion.div
-        className="absolute bottom-1/3 left-10 text-blue-400 opacity-20 text-xl"
-        animate={{ scale: [1, 1.3, 1] }}
-        transition={{ duration: 4, repeat: Infinity, delay: 1 }}
-      >
-        ●
       </motion.div>
     </div>
   );
@@ -171,14 +154,6 @@ export const SkillsQueryElements: React.FC = () => {
       >
         {'</>'}
       </motion.div>
-
-      <motion.div
-        className="absolute top-2/3 right-5 text-blue-400 opacity-20 font-mono text-xl font-bold"
-        animate={{ scale: [1, 1.2, 1] }}
-        transition={{ duration: 4, repeat: Infinity, delay: 2 }}
-      >
-        {'#'}
-      </motion.div>
     </div>
   );
 };
@@ -200,23 +175,6 @@ export const ExperienceQueryElements: React.FC = () => {
         transition={{ duration: 4, repeat: Infinity }}
       >
         FROM career_history WHERE impact = 'significant'
-      </motion.div>
-
-      {/* Timeline elements */}
-      <motion.div
-        className="absolute top-1/3 right-5 text-blue-300 opacity-25 text-lg"
-        animate={{ y: [0, -10, 0] }}
-        transition={{ duration: 6, repeat: Infinity }}
-      >
-        →
-      </motion.div>
-
-      <motion.div
-        className="absolute bottom-1/3 left-5 text-blue-400 opacity-20 text-xl"
-        animate={{ x: [0, 8, 0] }}
-        transition={{ duration: 4, repeat: Infinity, delay: 1 }}
-      >
-        ↗
       </motion.div>
     </div>
   );
@@ -249,14 +207,6 @@ export const PortfolioQueryElements: React.FC = () => {
       >
         JOIN
       </motion.div>
-
-      <motion.div
-        className="absolute bottom-1/4 left-10 text-blue-400 opacity-20 text-xl"
-        animate={{ rotate: [0, 180, 360] }}
-        transition={{ duration: 8, repeat: Infinity, delay: 1 }}
-      >
-        ◇
-      </motion.div>
     </div>
   );
 };
@@ -278,23 +228,6 @@ export const ContactQueryElements: React.FC = () => {
         transition={{ duration: 3, repeat: Infinity }}
       >
         FROM communication_channels WHERE active = true
-      </motion.div>
-
-      {/* Communication symbols */}
-      <motion.div
-        className="absolute top-1/3 left-10 text-blue-300 opacity-25 font-mono text-3xl font-bold"
-        animate={{ scale: [1, 1.2, 1] }}
-        transition={{ duration: 4, repeat: Infinity }}
-      >
-        {'@'}
-      </motion.div>
-
-      <motion.div
-        className="absolute bottom-1/3 right-10 text-blue-400 opacity-20 font-mono text-xl font-bold"
-        animate={{ y: [0, -10, 0] }}
-        transition={{ duration: 5, repeat: Infinity, delay: 2 }}
-      >
-        {'//'}
       </motion.div>
     </div>
   );

@@ -80,7 +80,7 @@ export const Footer: React.FC = () => {
           {/* Copyright */}
           <div className="border-t border-gray-800 pt-8">
             <p className="text-gray-400">
-              © {currentYear} {personalInfo.name}. All rights reserved.
+              Copyright {currentYear} {personalInfo.name}. All rights reserved.
             </p>
           </div>
         </motion.div>

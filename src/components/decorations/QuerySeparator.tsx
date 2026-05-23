@@ -87,13 +87,6 @@ export const QuerySeparator: React.FC<QuerySeparatorProps> = ({
       case 'arrows':
         return (
           <div className={`flex items-center justify-center space-x-4 ${className}`}>
-            <motion.span
-              className="text-blue-300 opacity-40 text-xl"
-              animate={{ x: [-5, 5, -5] }}
-              transition={{ duration: 2, repeat: Infinity }}
-            >
-              ←
-            </motion.span>
             <div className="flex space-x-1">
               {[...Array(7)].map((_, i) => (
                 <motion.div
@@ -108,13 +101,6 @@ export const QuerySeparator: React.FC<QuerySeparatorProps> = ({
                 />
               ))}
             </div>
-            <motion.span
-              className="text-blue-300 opacity-40 text-xl"
-              animate={{ x: [-5, 5, -5] }}
-              transition={{ duration: 2, repeat: Infinity, delay: 1 }}
-            >
-              →
-            </motion.span>
           </div>
         );
 

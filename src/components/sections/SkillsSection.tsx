@@ -427,7 +427,7 @@ export const SkillsSection: React.FC = () => {
                       ))}
                     </div>
                     <div className="text-xs text-gray-500 group-hover:text-blue-600 transition-colors font-medium">
-                      Click to explore →
+                      Click to explore
                     </div>
                   </div>
                 </div>
